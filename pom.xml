@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.o4codes</groupId>
-    <artifactId>ClipShare</artifactId>
+    <artifactId>CoPaste</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>ClipShare</name>
+    <name>CoPaste</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -45,11 +45,21 @@
             <artifactId>javalin</artifactId>
             <version>4.1.1</version>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>io.github.palexdev</groupId>-->
+<!--            <artifactId>materialfx</artifactId>-->
+<!--            <version>11.12.0</version>-->
+<!--            <scope>compile</scope>-->
+<!--        </dependency>-->
         <dependency>
-            <groupId>io.github.palexdev</groupId>
-            <artifactId>materialfx</artifactId>
-            <version>11.12.0</version>
-            <scope>compile</scope>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.8.0-beta4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.8.0-beta4</version>
         </dependency>
     </dependencies>
 
@@ -73,7 +83,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>com.o4codes.clipshare/com.o4codes.clipshare.MainApp</mainClass>
+                            <mainClass>com.o4codes.copaste/com.o4codes.copaste.MainApp</mainClass>
                         </configuration>
                     </execution>
                 </executions>

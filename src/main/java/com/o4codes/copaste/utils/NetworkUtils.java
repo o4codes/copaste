@@ -1,4 +1,4 @@
-package com.o4codes.clipshare.utils;
+package com.o4codes.copaste.utils;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.regex.Pattern;
 
-import static com.o4codes.clipshare.utils.Helper.checkStringForLetters;
+import static com.o4codes.copaste.utils.Helper.checkStringForLetters;
 
 public class NetworkUtils {
     public static int getFreePort(){
