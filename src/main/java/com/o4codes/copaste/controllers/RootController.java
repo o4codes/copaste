@@ -1,4 +1,4 @@
-package com.o4codes.clipshare.controllers;
+package com.o4codes.copaste.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
