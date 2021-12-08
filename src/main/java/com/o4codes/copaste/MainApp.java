@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+
 public class MainApp extends Application {
     @Override
     public void start(Stage stage) throws IOException {
@@ -15,10 +16,14 @@ public class MainApp extends Application {
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("ClipShare");
         stage.setScene(scene);
-        stage.show();
-        ClipService.startClipService();
 
+        // set up services
+        stage.setOnShown(event -> ClipService.startClipService());
+
+        //set the stage to be able to close the application and stop the clipboard service
         stage.setOnCloseRequest(event ->  ClipService.stopClipService());
+
+        stage.show();
 
     }
 

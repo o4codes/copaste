@@ -15,10 +15,11 @@ module com.o4codes.copaste {
     requires org.kordamp.ikonli.javafx;
     requires javafx.graphics;
     requires io.javalin;
-
+    requires kotlin.stdlib;
 
     opens com.o4codes.copaste to javafx.fxml;
     exports com.o4codes.copaste;
     exports com.o4codes.copaste.controllers;
+    exports com.o4codes.copaste.models;
     opens com.o4codes.copaste.controllers to javafx.fxml;
 }
