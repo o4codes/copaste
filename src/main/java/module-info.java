@@ -10,10 +10,10 @@
 module com.o4codes.copaste {
     requires javafx.controls;
     requires javafx.fxml;
+    requires javafx.graphics;
 
     requires org.controlsfx.controls;
     requires org.kordamp.ikonli.javafx;
-    requires javafx.graphics;
     requires io.javalin;
     requires kotlin.stdlib;
 
