@@ -11,6 +11,7 @@ module com.o4codes.copaste {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.graphics;
+    requires MaterialFX;
 
     requires org.controlsfx.controls;
     requires org.kordamp.ikonli.javafx;
