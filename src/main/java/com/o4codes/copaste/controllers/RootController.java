@@ -2,10 +2,17 @@ package com.o4codes.copaste.controllers;
 
 import com.o4codes.copaste.services.ClipService;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.factories.MFXAnimationFactory;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import java.net.URL;
@@ -45,11 +52,10 @@ public class RootController implements Initializable {
     }
 
 
-    public VBox connectionChoiceFragment() {
+    public Node connectionChoiceFragment() {
         VBox vBox = new VBox();
         vBox.setAlignment(Pos.CENTER);
         vBox.setSpacing(30);
-
         VBox.setVgrow(vBox, javafx.scene.layout.Priority.ALWAYS);
 
         MFXButton joinConnBtn = new MFXButton("Join Connection");
@@ -60,7 +66,52 @@ public class RootController implements Initializable {
         createConnBtn.getStyleClass().add("primary-button");
         createConnBtn.setPrefWidth(Double.MAX_VALUE);
 
+        joinConnBtn.setOnAction(event -> {
+            fragmentsPane.getChildren().clear();
+            fragmentsPane.getChildren().add(joinConnectionPane());
+        });
+
         vBox.getChildren().addAll(joinConnBtn, createConnBtn);
+        return vBox;
+    }
+
+
+    public Node joinConnectionPane(){
+        VBox vBox = new VBox();
+        vBox.setAlignment(Pos.CENTER);
+        VBox.setVgrow(vBox, javafx.scene.layout.Priority.ALWAYS);
+
+        Label addressLabel = new Label("Host URL");
+        addressLabel.getStyleClass().add("field_lbl");
+        addressLabel.setPrefWidth(Double.MAX_VALUE);
+
+        TextField URLfield = new TextField();
+        URLfield.getStyleClass().add("field");
+        URLfield.setPromptText("Enter host URL");
+        URLfield.setPrefWidth(Double.MAX_VALUE);
+
+        HBox btnPane = new HBox();
+        btnPane.setSpacing(20);
+        btnPane.setMaxWidth(Double.MAX_VALUE);
+        VBox.setMargin(btnPane, new Insets(40,0,0,0));
+
+        MFXButton homeBtn = new MFXButton("Home");
+        homeBtn.getStyleClass().add("secondary-button");
+        homeBtn.setMaxWidth(Double.MAX_VALUE);
+        homeBtn.setOnAction(event -> {
+            fragmentsPane.getChildren().clear();
+            fragmentsPane.getChildren().add(connectionChoiceFragment());
+        });
+
+        MFXButton proceedBtn = new MFXButton("Proceed");
+        proceedBtn.getStyleClass().add("primary-button");
+        proceedBtn.setMaxWidth(Double.MAX_VALUE);
+
+        HBox.setHgrow(proceedBtn, Priority.ALWAYS);
+        HBox.setHgrow(homeBtn, Priority.ALWAYS);
+        btnPane.getChildren().addAll(homeBtn, proceedBtn);
+        addressLabel.setLabelFor(URLfield);
+        vBox.getChildren().addAll(addressLabel, URLfield, btnPane);
         return vBox;
     }
 }
