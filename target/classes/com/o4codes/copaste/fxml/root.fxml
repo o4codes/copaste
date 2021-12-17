@@ -14,29 +14,32 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="400.0" stylesheets="@../styles/light.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="400.0" stylesheets="@../styles/light.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.o4codes.copaste.controllers.RootController">
    <top>
-      <HBox alignment="CENTER_LEFT" prefHeight="33.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER_LEFT" prefHeight="33.0" prefWidth="800.0" styleClass="app-header" BorderPane.alignment="CENTER">
          <children>
-            <Label prefHeight="15.0" prefWidth="393.0" text="CoPaste">
+            <Label prefHeight="15.0" prefWidth="393.0" text="CoPaste" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
                <graphic>
-                  <FontIcon iconColor="#1f73ed" iconLiteral="mdi-content-duplicate" iconSize="15" />
+                  <FontIcon iconColor="WHITE" iconLiteral="mdi-content-duplicate" iconSize="15" />
                </graphic>
             </Label>
-            <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" styleClass="app-exit-btn" text="Button">
+            <Button fx:id="closeBtn" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="22.0" prefWidth="38.0" styleClass="app-exit-btn" text="Button">
                <graphic>
-                  <FontIcon iconLiteral="mdi-close" iconSize="16" />
+                  <FontIcon iconColor="WHITE" iconLiteral="mdi-close" iconSize="14" styleClass="close-icon" />
                </graphic>
+               <padding>
+                  <Insets bottom="2.0" left="4.0" right="4.0" top="2.0" />
+               </padding>
             </Button>
          </children>
          <padding>
-            <Insets left="15.0" right="10.0" />
+            <Insets bottom="10.0" left="15.0" right="10.0" top="10.0" />
          </padding>
          <BorderPane.margin>
-            <Insets top="5.0" />
+            <Insets />
          </BorderPane.margin></HBox>
    </top>
    <center>

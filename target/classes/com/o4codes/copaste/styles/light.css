@@ -3,12 +3,30 @@
 
 }
 
+.app-header {
+    -fx-background-color: #212121;
+}
+
+.app-header:pressed{
+    -fx-cursor: move;
+}
+
 .app-exit-btn{
-    -fx-background-color: #ffffff;
+    -fx-background-color: red;
+    -fx-background-radius: 20px;
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-cursor: hand;
     }
+
+.app-exit-btn:hover {
+    -fx-background-color: #ef5350;
+}
+
+.close-icon{
+    -fx-icon-color: white;
+}
+
 
 .field_lbl {
     -fx-font-weight: bold;
