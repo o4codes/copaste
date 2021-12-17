@@ -3,6 +3,7 @@ package com.o4codes.copaste.utils;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -60,4 +61,17 @@ public class NetworkUtils {
     }
 
 
+    public static String getDeviceName() {
+        String systemName = null;
+
+        try {
+            systemName = InetAddress.getLocalHost().getHostName();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+
+        // SystemName stores the name of the system
+        System.out.println("System Name : "+ systemName);
+        return systemName;
+    }
 }

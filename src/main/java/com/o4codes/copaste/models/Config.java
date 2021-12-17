@@ -3,12 +3,12 @@ package com.o4codes.copaste.models;
 public class Config {
     private String name;
     private int port;
-    private boolean dark_mode;
+    private boolean darkMode;
 
-    public Config(String name, int port, boolean dark_mode) {
+    public Config(String name, int port, boolean darkMode) {
         this.name = name;
         this.port = port;
-        this.dark_mode = dark_mode;
+        this.darkMode = darkMode;
     }
 
     public String getName() {
@@ -27,11 +27,11 @@ public class Config {
         this.port = port;
     }
 
-    public boolean isDark_mode() {
-        return dark_mode;
+    public boolean isDarkMode() {
+        return darkMode;
     }
 
-    public void setDark_mode(boolean dark_mode) {
-        this.dark_mode = dark_mode;
+    public void setDarkMode(boolean darkMode) {
+        this.darkMode = darkMode;
     }
 }
