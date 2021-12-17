@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import io.github.palexdev.materialfx.controls.MFXButton?>
-<?import io.github.palexdev.materialfx.controls.MFXToggleButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
@@ -50,34 +47,11 @@
                   <Circle fill="DODGERBLUE" radius="60.0" stroke="WHITE" strokeType="INSIDE" />
                   <FontIcon iconColor="WHITE" iconLiteral="mdi-content-duplicate" iconSize="70" />
                </children>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
             </StackPane>
-            <StackPane prefHeight="222.0" prefWidth="400.0">
-               <children>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
-                     <children>
-                        <Label prefHeight="14.0" prefWidth="517.0" styleClass="field_lbl" text="Device Name" />
-                        <TextField promptText="Enter device name" styleClass="field" />
-                        <HBox alignment="CENTER" spacing="30.0">
-                           <children>
-                              <MFXToggleButton text="Beep" toggleColor="#183cee" toggleLineColor="DODGERBLUE" />
-                              <MFXToggleButton layoutX="10.0" layoutY="10.0" text="Light" toggleColor="#183cee" toggleLineColor="DODGERBLUE" />
-                           </children>
-                           <VBox.margin>
-                              <Insets top="15.0" />
-                           </VBox.margin>
-                        </HBox>
-                        <MFXButton prefHeight="24.0" prefWidth="487.0" styleClass="primary-button" text="Setup">
-                           <VBox.margin>
-                              <Insets top="20.0" />
-                           </VBox.margin>
-                        </MFXButton>
-                     </children>
-                  </VBox>
-               </children>
-               <padding>
-                  <Insets left="10.0" right="10.0" />
-               </padding>
-            </StackPane>
+            <VBox fx:id="fragmentsPane" alignment="CENTER" prefHeight="192.0" prefWidth="360.0" VBox.vgrow="ALWAYS" />
          </children>
          <BorderPane.margin>
             <Insets />
@@ -87,4 +61,23 @@
          </padding>
       </VBox>
    </center>
+   <bottom>
+      <HBox alignment="TOP_RIGHT" prefHeight="34.0" prefWidth="400.0" spacing="20.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label contentDisplay="RIGHT" styleClass="small_click_label" text="Settings">
+               <graphic>
+                  <FontIcon iconLiteral="mdi-settings" iconSize="14" />
+               </graphic>
+            </Label>
+            <Label contentDisplay="RIGHT" graphicTextGap="2.0" layoutX="336.0" layoutY="10.0" styleClass="small_click_label" text="Help">
+               <graphic>
+                  <FontIcon iconLiteral="mdi-help" />
+               </graphic>
+            </Label>
+         </children>
+         <padding>
+            <Insets right="20.0" />
+         </padding>
+      </HBox>
+   </bottom>
 </BorderPane>
