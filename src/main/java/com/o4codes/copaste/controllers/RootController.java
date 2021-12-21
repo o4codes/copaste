@@ -1,5 +1,6 @@
 package com.o4codes.copaste.controllers;
 
+import com.o4codes.copaste.MainApp;
 import com.o4codes.copaste.services.ClipService;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.factories.MFXAnimationFactory;
@@ -11,10 +12,13 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.BoxBlur;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -25,6 +29,12 @@ public class RootController implements Initializable {
 
     @FXML
     private VBox fragmentsPane;
+
+    @FXML
+    private Label settingsLabel;
+
+    @FXML
+    private Label helpLabel;
 
     private double xOffset, yOffset;
 
@@ -48,6 +58,20 @@ public class RootController implements Initializable {
         closeBtn.setOnAction(event -> {
             ClipService.stopClipService();
             System.exit(0);
+        });
+
+        helpLabel.setOnMouseClicked(event -> {
+            BoxBlur blur = new BoxBlur(3, 3, 3);
+            Node parent = helpLabel.getParent().getParent();
+            parent.setEffect(blur);
+            try {
+                MainApp.helpViewStags().showAndWait();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            parent.setEffect(null);
+
         });
     }
 

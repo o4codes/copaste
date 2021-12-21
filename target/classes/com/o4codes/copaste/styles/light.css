@@ -11,6 +11,17 @@
     -fx-cursor: move;
 }
 
+.header-label {
+    -fx-text-fill: #424242;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.text_label {
+    -fx-text-fill: #424242;
+    -fx-font-size: 12px;
+}
+
 .app-exit-btn{
     -fx-background-color: red;
     -fx-background-radius: 20px;
@@ -80,4 +91,6 @@
 .small_click_label:hover {
     -fx-underline: true;
     }
+
+
 }

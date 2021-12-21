@@ -64,19 +64,19 @@
    <bottom>
       <HBox alignment="TOP_RIGHT" prefHeight="34.0" prefWidth="400.0" spacing="20.0" BorderPane.alignment="CENTER">
          <children>
-            <Label contentDisplay="RIGHT" styleClass="small_click_label" text="Settings">
+            <Label contentDisplay="RIGHT" styleClass="small_click_label" text="Settings" fx:id="settingsLabel">
                <graphic>
                   <FontIcon iconLiteral="mdi-settings" iconSize="14" />
                </graphic>
             </Label>
-            <Label contentDisplay="RIGHT" graphicTextGap="2.0" layoutX="336.0" layoutY="10.0" styleClass="small_click_label" text="Help">
+            <Label contentDisplay="RIGHT" graphicTextGap="2.0" layoutX="336.0" layoutY="10.0" styleClass="small_click_label" text="Help" fx:id="helpLabel">
                <graphic>
                   <FontIcon iconLiteral="mdi-help" />
                </graphic>
             </Label>
          </children>
          <padding>
-            <Insets right="20.0" />
+            <Insets right="20.0"/>
          </padding>
       </HBox>
    </bottom>
