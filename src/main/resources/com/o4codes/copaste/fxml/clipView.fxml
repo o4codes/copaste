@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" stylesheets="@../styles/light.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.o4codes.copaste.controllers.ClipViewController">
+   <top>
+      <HBox prefHeight="33.0" prefWidth="200.0" styleClass="app-header" BorderPane.alignment="CENTER">
+         <children>
+            <Label prefHeight="15.0" prefWidth="679.0" text="CoPaste" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+               <graphic>
+                  <FontIcon iconColor="WHITE" iconLiteral="mdi-content-duplicate" iconSize="15" />
+               </graphic>
+            </Label>
+            <Button fx:id="closeBtn" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="22.0" prefWidth="38.0" styleClass="app-exit-btn" text="Button">
+               <graphic>
+                  <FontIcon iconColor="WHITE" iconLiteral="mdi-close" iconSize="14" styleClass="close-icon" />
+               </graphic>
+               <padding>
+                  <Insets bottom="2.0" left="4.0" right="4.0" top="2.0" />
+               </padding>
+            </Button>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="15.0" right="10.0" top="10.0" />
+         </padding>
+      </HBox>
+   </top>
+   <bottom>
+      <HBox alignment="TOP_RIGHT" prefHeight="34.0" prefWidth="400.0" spacing="20.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="settingsLabel" contentDisplay="RIGHT" styleClass="small_click_label" text="Settings">
+               <graphic>
+                  <FontIcon iconLiteral="mdi-settings" iconSize="14" />
+               </graphic>
+            </Label>
+            <Label fx:id="helpLabel" contentDisplay="RIGHT" graphicTextGap="2.0" layoutX="336.0" layoutY="10.0" styleClass="small_click_label" text="Help">
+               <graphic>
+                  <FontIcon iconLiteral="mdi-help" />
+               </graphic>
+            </Label>
+         </children>
+         <padding>
+            <Insets right="20.0" />
+         </padding>
+      </HBox>
+   </bottom>
+   <center>
+      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <padding>
+            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+         </padding>
+         <children>
+            <VBox spacing="10.0">
+               <children>
+                  <Label styleClass="header-label" text="Clipboard History" />
+                  <MFXScrollPane fitToWidth="true" hbarPolicy="NEVER" VBox.vgrow="ALWAYS">
+                     <content>
+                        <VBox fx:id="clipHistoryPane" prefWidth="291.0" spacing="10.0" />
+                     </content>
+                  </MFXScrollPane>
+               </children>
+               <padding>
+                  <Insets right="10.0" />
+               </padding>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <VBox prefHeight="43.0" prefWidth="361.0" spacing="2.0">
+                     <children>
+                        <Label styleClass="small_click_label" text="Connection Address" />
+                        <Label fx:id="connectionAddressLbl" layoutX="10.0" layoutY="10.0" prefHeight="18.0" prefWidth="483.0" styleClass="large-label" text="Connection Address">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <Label styleClass="small_click_label" text="Current Clip">
+                     <VBox.margin>
+                        <Insets bottom="3.0" top="30.0" />
+                     </VBox.margin>
+                  </Label>
+                  <VBox alignment="CENTER" prefHeight="319.0" prefWidth="351.0" styleClass="dark-border">
+                     <children>
+                        <Label styleClass="small_click_label" text="Device Name" />
+                        <Label fx:id="clipDeviceNameLbl" alignment="CENTER" layoutX="142.0" layoutY="158.0" prefWidth="409.0" styleClass="secondary-container" text="Device Name" textAlignment="CENTER" wrapText="true">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </Label>
+                        <Label layoutX="145.0" layoutY="149.0" styleClass="small_click_label" text="Clip Content">
+                           <VBox.margin>
+                              <Insets top="30.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label fx:id="clipContentLbl" alignment="CENTER" layoutX="127.0" layoutY="146.0" prefWidth="418.0" styleClass="secondary-container" text="sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss" textAlignment="CENTER" wrapText="true">
+                           <padding>
+                              <Insets bottom="6.0" left="6.0" right="6.0" top="2.0" />
+                           </padding>
+                        </Label>
+                        <Label layoutX="148.0" layoutY="176.0" styleClass="small_click_label" text="Copied at">
+                           <VBox.margin>
+                              <Insets top="30.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label fx:id="clipDateTimeContent" alignment="CENTER" layoutX="27.0" layoutY="191.0" prefWidth="418.0" styleClass="secondary-container" text="Date time of content" textAlignment="CENTER" wrapText="true" />
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <padding>
+                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                     </padding>
+                  </VBox>
+               </children>
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </VBox>
+         </children>
+      </HBox>
+   </center>
+</BorderPane>
