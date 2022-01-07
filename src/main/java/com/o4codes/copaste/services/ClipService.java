@@ -42,6 +42,16 @@ public class ClipService {
            Session.clip = clip;
            ctx.result("Clip updated").status(200);
         });
+
+        app.ws("/clip", ws -> {
+            ws.onConnect(ctx -> {
+                ctx.send(Session.clip);
+            });
+
+            ws.onMessage(ctx -> {
+                
+            });
+        });
     }
 
 
