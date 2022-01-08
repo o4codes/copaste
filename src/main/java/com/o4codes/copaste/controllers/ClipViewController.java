@@ -14,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.effect.BoxBlur;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -25,13 +26,10 @@ import java.util.ResourceBundle;
 
 public class ClipViewController implements Initializable {
     @FXML
+    private BorderPane rootPane;
+
+    @FXML
     private Button closeBtn;
-
-    @FXML
-    private Label settingsLabel;
-
-    @FXML
-    private Label helpLabel;
 
     @FXML
     private VBox clipHistoryPane;
@@ -58,6 +56,8 @@ public class ClipViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        rootPane.setBottom(MainApp.bottomFragment(rootPane));
         setEmptyClipHistory();
 
         closeBtn.getParent().setOnMousePressed(event -> {
@@ -76,19 +76,6 @@ public class ClipViewController implements Initializable {
             System.exit(0);
         });
 
-        helpLabel.setOnMouseClicked(event -> {
-            BoxBlur blur = new BoxBlur(3, 3, 3);
-            Node parent = helpLabel.getParent().getParent();
-            parent.setEffect(blur);
-            try {
-                MainApp.helpViewStags().showAndWait();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            parent.setEffect(null);
-
-        });
     }
 
     private void setEmptyClipHistory(){

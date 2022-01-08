@@ -6,9 +6,12 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
+import javafx.scene.effect.BoxBlur;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -94,6 +97,43 @@ public class MainApp extends Application {
 
         return stage;
     }
+
+    public static HBox bottomFragment(Node parent){
+        HBox hBox = new HBox();
+        hBox.setAlignment(Pos.TOP_RIGHT);
+        hBox.setSpacing(20);
+        hBox.setPadding(new Insets(0,20,0,0));
+        hBox.setPrefHeight(34);
+
+        Label settingsLabel = new Label("Settings");
+        FontIcon settingsIcon = new FontIcon("mdi-settings");
+        settingsIcon.setIconSize(14);
+        settingsLabel.setGraphic(settingsIcon);
+        settingsLabel.setContentDisplay(ContentDisplay.RIGHT);
+        settingsLabel.getStyleClass().add("small_click_label");
+
+        Label helpLabel = new Label("Help");
+        FontIcon helpIcon = new FontIcon("mdi-help");
+        helpIcon.setIconSize(14);
+        helpLabel.setGraphic(helpIcon);
+        helpLabel.setContentDisplay(ContentDisplay.RIGHT);
+        helpLabel.getStyleClass().add("small_click_label");
+        helpLabel.setOnMouseClicked(event -> {
+            BoxBlur blur = new BoxBlur(3, 3, 3);
+            parent.setEffect(blur);
+            try {
+                MainApp.helpViewStags().showAndWait();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            parent.setEffect(null);
+        });
+
+        hBox.getChildren().addAll(settingsLabel, helpLabel);
+        return hBox;
+    }
+
 
     public static void main(String[] args) {
         launch();

@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" stylesheets="@../styles/light.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.o4codes.copaste.controllers.ClipViewController">
+<BorderPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" stylesheets="@../styles/light.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.o4codes.copaste.controllers.ClipViewController">
    <top>
       <HBox prefHeight="33.0" prefWidth="200.0" styleClass="app-header" BorderPane.alignment="CENTER">
          <children>
@@ -37,25 +37,6 @@
          </padding>
       </HBox>
    </top>
-   <bottom>
-      <HBox alignment="TOP_RIGHT" prefHeight="34.0" prefWidth="400.0" spacing="20.0" BorderPane.alignment="CENTER">
-         <children>
-            <Label fx:id="settingsLabel" contentDisplay="RIGHT" styleClass="small_click_label" text="Settings">
-               <graphic>
-                  <FontIcon iconLiteral="mdi-settings" iconSize="14" />
-               </graphic>
-            </Label>
-            <Label fx:id="helpLabel" contentDisplay="RIGHT" graphicTextGap="2.0" layoutX="336.0" layoutY="10.0" styleClass="small_click_label" text="Help">
-               <graphic>
-                  <FontIcon iconLiteral="mdi-help" />
-               </graphic>
-            </Label>
-         </children>
-         <padding>
-            <Insets right="20.0" />
-         </padding>
-      </HBox>
-   </bottom>
    <center>
       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <padding>
@@ -104,7 +85,7 @@
                   <VBox alignment="CENTER" prefHeight="319.0" prefWidth="351.0" styleClass="dark-border">
                      <children>
                         <Label styleClass="small_click_label" text="Device Name" />
-                        <Label fx:id="clipDeviceNameLbl" alignment="CENTER" layoutX="142.0" layoutY="158.0" prefWidth="409.0" styleClass="secondary-container" text="None" textAlignment="CENTER" wrapText="true">
+                        <Label fx:id="clipDeviceNameLbl" alignment="CENTER" layoutX="142.0" layoutY="158.0" prefWidth="409.0" styleClass="header-label" text="None" textAlignment="CENTER" wrapText="true">
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
@@ -124,7 +105,7 @@
                               <Insets top="30.0" />
                            </VBox.margin>
                         </Label>
-                        <Label fx:id="clipDateTimeContent" alignment="CENTER" layoutX="27.0" layoutY="191.0" prefWidth="418.0" styleClass="secondary-container" text="Date time of content" textAlignment="CENTER" wrapText="true" />
+                        <Label fx:id="clipDateTimeContent" alignment="CENTER" layoutX="27.0" layoutY="191.0" prefWidth="418.0" styleClass="header-label" text="Date time of content" textAlignment="CENTER" wrapText="true" />
                      </children>
                      <VBox.margin>
                         <Insets />
