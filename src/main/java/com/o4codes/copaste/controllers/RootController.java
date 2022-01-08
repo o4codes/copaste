@@ -3,7 +3,6 @@ package com.o4codes.copaste.controllers;
 import com.o4codes.copaste.MainApp;
 import com.o4codes.copaste.services.ClipService;
 import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.factories.MFXAnimationFactory;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -93,6 +92,15 @@ public class RootController implements Initializable {
         joinConnBtn.setOnAction(event -> {
             fragmentsPane.getChildren().clear();
             fragmentsPane.getChildren().add(joinConnectionPane());
+        });
+
+        createConnBtn.setOnAction(event -> {
+            try {
+                MainApp.clipViewStage().show();
+                createConnBtn.getScene().getWindow().hide();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
 
         vBox.getChildren().addAll(joinConnBtn, createConnBtn);

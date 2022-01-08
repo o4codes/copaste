@@ -81,6 +81,20 @@ public class MainApp extends Application {
         return stage;
     }
 
+    public static Stage clipViewStage() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("fxml/clipView.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+
+        Stage stage = new Stage();
+
+        //stage decorations
+        stage.setTitle("ClipShare");
+        stage.initStyle(StageStyle.UNDECORATED);
+        stage.setScene(scene);
+
+        return stage;
+    }
+
     public static void main(String[] args) {
         launch();
     }

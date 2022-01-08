@@ -1,6 +1,9 @@
 package com.o4codes.copaste.controllers;
 
+import com.o4codes.copaste.MainApp;
+import com.o4codes.copaste.services.ClipService;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXScrollPane;
 import io.github.palexdev.materialfx.controls.enums.ButtonType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -10,10 +13,13 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
+import javafx.scene.effect.BoxBlur;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import org.kordamp.ikonli.javafx.FontIcon;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -42,10 +48,61 @@ public class ClipViewController implements Initializable {
     @FXML
     private Label clipDateTimeContent;
 
+    @FXML
+    private MFXScrollPane scrollPane;
+
+    @FXML
+    private MFXButton disconnectBtn;
+
+    private double xOffset, yOffset;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        setEmptyClipHistory();
 
+        closeBtn.getParent().setOnMousePressed(event -> {
+            xOffset = event.getSceneX();
+            yOffset = event.getSceneY();
+        });
+
+        closeBtn.getParent().setOnMouseDragged(event -> {
+            Stage stage = (Stage) closeBtn.getScene().getWindow();
+            stage.setX(event.getScreenX() - xOffset);
+            stage.setY(event.getScreenY() - yOffset);
+        });
+
+        closeBtn.setOnAction(event -> {
+            ClipService.stopClipService();
+            System.exit(0);
+        });
+
+        helpLabel.setOnMouseClicked(event -> {
+            BoxBlur blur = new BoxBlur(3, 3, 3);
+            Node parent = helpLabel.getParent().getParent();
+            parent.setEffect(blur);
+            try {
+                MainApp.helpViewStags().showAndWait();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            parent.setEffect(null);
+
+        });
+    }
+
+    private void setEmptyClipHistory(){
+        VBox root = new VBox();
+        root.getStyleClass().add("root");
+        root.setPrefHeight(360);
+        root.setAlignment(Pos.CENTER);
+
+        Label contentLabel = new Label("Empty Clipboard History");
+        contentLabel.getStyleClass().add("small_click_label");
+
+        root.getChildren().add(contentLabel);
+        clipHistoryPane.getChildren().removeAll();
+        clipHistoryPane.getChildren().add(root);
     }
 
     public Node clipCard(String clipText){
