@@ -13,6 +13,7 @@ module com.o4codes.copaste {
     requires javafx.graphics;
     requires MaterialFX;
     requires java.prefs;
+    requires java.net.http;
 
     requires org.controlsfx.controls;
     requires org.kordamp.ikonli.javafx;

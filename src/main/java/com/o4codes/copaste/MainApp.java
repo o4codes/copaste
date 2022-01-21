@@ -1,6 +1,7 @@
 package com.o4codes.copaste;
 
 import com.o4codes.copaste.services.ClipService;
+import com.o4codes.copaste.services.WebClientService;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -20,11 +21,17 @@ import javafx.stage.StageStyle;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.WebSocket;
+import java.util.concurrent.CountDownLatch;
 
 
 public class MainApp extends Application {
+    public static CountDownLatch latch = new CountDownLatch(1);
+
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) throws IOException, InterruptedException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("fxml/root.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
 
@@ -40,6 +47,10 @@ public class MainApp extends Application {
         stage.setOnCloseRequest(event ->  ClipService.stopClipService());
 
         stage.show(); // display main window
+
+
+        WebClientService service = new WebClientService();
+        service.startClient();
     }
 
     //show a help window
@@ -137,5 +148,7 @@ public class MainApp extends Application {
 
     public static void main(String[] args) {
         launch();
+
+
     }
 }

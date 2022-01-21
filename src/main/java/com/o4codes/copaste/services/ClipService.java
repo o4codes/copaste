@@ -4,12 +4,19 @@ import com.o4codes.copaste.models.Clip;
 import com.o4codes.copaste.utils.Session;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
+import io.javalin.http.staticfiles.Location;
 
 public class ClipService {
     static Javalin app;
 
     public static void startClipService() {
-        app = Javalin.create().start();
+        app = Javalin.create(config -> {
+            config.addStaticFiles(staticFileConfig -> {
+                staticFileConfig.hostedPath = "/";
+                staticFileConfig.directory = "/com/o4codes/copaste/public";
+                staticFileConfig.location = Location.CLASSPATH;
+            });
+        }).start(7235);
         setupRoutes(); // setup server routes
         System.out.println("ClipService started");
     }
@@ -26,15 +33,15 @@ public class ClipService {
 
 
     public static void setupRoutes() {
-        app.get("/", ctx -> {
+        app.get("/api/v1", ctx -> {
             ctx.result("CoPaste API");
         });
 
-        app.get("/clip", ctx -> {
+        app.get("/api/v1/clip", ctx -> {
             ctx.json(Session.clip);
         });
 
-        app.put("/clip", ctx -> {
+        app.put("/api/v1/clip", ctx -> {
            Clip clip =  ctx.bodyValidator(Clip.class)
                     .check(obj -> obj.getCreatedAt() > Session.clip.getCreatedAt(), "Clip is older than last one")
                     .get();
@@ -49,11 +56,11 @@ public class ClipService {
             });
 
             ws.onMessage(ctx -> {
-                
+//                System.out.println(ctx.message());
+                ctx.send(ctx.message());
             });
         });
     }
-
 
 
 }
