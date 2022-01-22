@@ -5,6 +5,7 @@ import com.o4codes.copaste.MainApp;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.WebSocket;
+import java.nio.ByteBuffer;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.CountDownLatch;
@@ -13,10 +14,9 @@ import java.util.concurrent.TimeUnit;
 public class WebClientService implements WebSocket.Listener {
 
 
-
     @Override
     public void onOpen(WebSocket webSocket) {
-        webSocket.request(1);
+//        webSocket.request(6);
         System.out.println("onOpen using subprotocol " + webSocket.getSubprotocol());
         WebSocket.Listener.super.onOpen(webSocket);
     }
@@ -24,13 +24,10 @@ public class WebClientService implements WebSocket.Listener {
     @Override
     public CompletionStage<?> onText(WebSocket webSocket, CharSequence data, boolean last) {
 //        MainApp.latch.countDown();
-        webSocket.request(1);
+        webSocket.request(6);
         System.out.println("onText received " + data);
-
-        return CompletableFuture.completedFuture(data)
-                .thenAccept(o -> System.out.println("Handling data: " + o));
+        return WebSocket.Listener.super.onText(webSocket, data, last);
     }
-
 
     @Override
     public void onError(WebSocket webSocket, Throwable error) {
@@ -44,6 +41,22 @@ public class WebClientService implements WebSocket.Listener {
         return WebSocket.Listener.super.onClose(webSocket, statusCode, reason);
     }
 
+    @Override
+    public CompletionStage<?> onPing(WebSocket webSocket, ByteBuffer message) {
+        webSocket.request(1);
+        System.out.println("onPing " + message);
+        webSocket.sendPong(message);
+        return WebSocket.Listener.super.onPing(webSocket, message);
+    }
+
+    @Override
+    public CompletionStage<?> onPong(WebSocket webSocket, ByteBuffer message) {
+        webSocket.request(1);
+        System.out.println("onPong " + message);
+        webSocket.sendPing(message);
+        return WebSocket.Listener.super.onPong(webSocket, message);
+    }
+
     public void startClient() throws InterruptedException {
         System.out.println("Starting client");
 
@@ -53,10 +66,8 @@ public class WebClientService implements WebSocket.Listener {
                 .buildAsync(URI.create("ws://127.0.0.1:7235/clip"), this)
                 .join();
 
-//        while (true) {
-            ws.sendText(" ", true);
-//        }
-
-
+        while(true){}
     }
+
+
 }

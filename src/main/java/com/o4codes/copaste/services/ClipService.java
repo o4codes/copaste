@@ -8,7 +8,7 @@ import io.javalin.http.staticfiles.Location;
 
 public class ClipService {
     static Javalin app;
-
+    static String message = "testing";
     public static void startClipService() {
         app = Javalin.create(config -> {
             config.addStaticFiles(staticFileConfig -> {
@@ -56,8 +56,10 @@ public class ClipService {
             });
 
             ws.onMessage(ctx -> {
-//                System.out.println(ctx.message());
-                ctx.send(ctx.message());
+                if (ctx.message() != ""){
+                    message = ctx.message();
+                }
+                ctx.send(message);
             });
         });
     }
