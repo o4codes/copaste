@@ -10,9 +10,10 @@ import static com.o4codes.copaste.utils.Session.usersMap;
 
 public class SocketServerService {
     static Javalin app;
-    static String message = "testing";
 
-    public static void startClipService() {
+
+
+    public static void startServer() {
         app = Javalin.create(config -> {
             config.addStaticFiles(staticFileConfig -> {
                 staticFileConfig.hostedPath = "/";
@@ -21,7 +22,7 @@ public class SocketServerService {
             });
         }).start(7235);
         setupRoutes(); // setup server routes
-        System.out.println("ClipService started");
+        System.out.println("Socket Service started");
     }
 
     public static void stopClipService() {
@@ -68,6 +69,7 @@ public class SocketServerService {
 
             ws.onMessage(ctx -> {
                 try {
+                    Session.clip = ctx.messageAsClass(Clip.class);
                     broadCastMessage(ctx.messageAsClass(Clip.class), ctx);
                 } catch (Exception e) {
                     ctx.send("Invalid message body structure");
@@ -75,7 +77,7 @@ public class SocketServerService {
             });
 
             ws.onClose(ctx -> {
-                System.out.println("ClipService: WebSocket closed");
+                System.out.println("Socket Service: WebSocket closed");
             });
         });
     }

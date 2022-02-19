@@ -25,9 +25,6 @@ public class SocketClientService implements WebSocket.Listener {
     public CompletionStage<?> onText(WebSocket webSocket, CharSequence data, boolean last) {
         webSocket.request(1);
         System.out.println("onText received " + data);
-//        Gson gson = new Gson();
-//        Session.clip = gson.fromJson(data.toString(), Clip.class);
-        System.out.println(Session.clip.getContent());
         return WebSocket.Listener.super.onText(webSocket, data, last);
     }
 
@@ -69,11 +66,6 @@ public class SocketClientService implements WebSocket.Listener {
                     .newWebSocketBuilder()
                     .buildAsync(URI.create("ws://127.0.0.1:7235/clip"), this)
                     .join();
-
-//            Gson gson = FxGson.create();
-//            while (true) {
-//                ws.sendText(gson.toJson(Session.clip), true);
-//            }
         }).start();
 
     }

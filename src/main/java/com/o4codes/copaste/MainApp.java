@@ -1,5 +1,6 @@
 package com.o4codes.copaste;
 
+import com.o4codes.copaste.services.SocketClientService;
 import com.o4codes.copaste.services.SocketServerService;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.application.Application;
@@ -36,7 +37,7 @@ public class MainApp extends Application {
         stage.setScene(scene);
 
         // set up services
-        stage.setOnShown(event -> SocketServerService.startClipService());
+        stage.setOnShown(event -> SocketServerService.startServer());
 
         //set the stage to be able to close the application and stop the clipboard service
         stage.setOnCloseRequest(event ->  SocketServerService.stopClipService());
@@ -44,8 +45,8 @@ public class MainApp extends Application {
         stage.show(); // display main window
 
 
-//        WebClientService service = new WebClientService();
-//        service.startClient();
+        SocketClientService socketClient= new SocketClientService();
+        socketClient.startClient();
     }
 
     //show a help window
