@@ -2,9 +2,7 @@ package com.o4codes.copaste.services;
 
 
 //import com.google.gson.Gson;
-import com.o4codes.copaste.models.Clip;
 import com.o4codes.copaste.utils.Session;
-import org.eclipse.jetty.websocket.client.WebSocketClient;
 //import org.hildan.fxgson.FxGson;
 
 import java.net.URI;
@@ -13,7 +11,7 @@ import java.net.http.WebSocket;
 import java.nio.ByteBuffer;
 import java.util.concurrent.CompletionStage;
 
-public class WebClientService implements WebSocket.Listener {
+public class SocketClientService implements WebSocket.Listener {
 
 
     @Override

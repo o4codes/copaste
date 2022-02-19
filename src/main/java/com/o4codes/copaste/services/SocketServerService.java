@@ -8,7 +8,7 @@ import io.javalin.websocket.WsContext;
 
 import static com.o4codes.copaste.utils.Session.usersMap;
 
-public class ClipService {
+public class SocketServerService {
     static Javalin app;
     static String message = "testing";
 

@@ -1,7 +1,7 @@
 package com.o4codes.copaste.controllers;
 
 import com.o4codes.copaste.MainApp;
-import com.o4codes.copaste.services.ClipService;
+import com.o4codes.copaste.services.SocketServerService;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -11,7 +11,6 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.effect.BoxBlur;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -54,7 +53,7 @@ public class RootController implements Initializable {
         });
 
         closeBtn.setOnAction(event -> {
-            ClipService.stopClipService();
+            SocketServerService.stopClipService();
             System.exit(0);
         });
 

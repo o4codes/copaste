@@ -1,7 +1,7 @@
 package com.o4codes.copaste.controllers;
 
 import com.o4codes.copaste.MainApp;
-import com.o4codes.copaste.services.ClipService;
+import com.o4codes.copaste.services.SocketServerService;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXScrollPane;
 import io.github.palexdev.materialfx.controls.enums.ButtonType;
@@ -13,14 +13,12 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
-import javafx.scene.effect.BoxBlur;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.kordamp.ikonli.javafx.FontIcon;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -72,7 +70,7 @@ public class ClipViewController implements Initializable {
         });
 
         closeBtn.setOnAction(event -> {
-            ClipService.stopClipService();
+            SocketServerService.stopClipService();
             System.exit(0);
         });
 

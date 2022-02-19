@@ -1,7 +1,6 @@
 package com.o4codes.copaste;
 
-import com.o4codes.copaste.services.ClipService;
-import com.o4codes.copaste.services.WebClientService;
+import com.o4codes.copaste.services.SocketServerService;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -15,15 +14,11 @@ import javafx.scene.effect.BoxBlur;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.WebSocket;
 import java.util.concurrent.CountDownLatch;
 
 
@@ -41,10 +36,10 @@ public class MainApp extends Application {
         stage.setScene(scene);
 
         // set up services
-        stage.setOnShown(event -> ClipService.startClipService());
+        stage.setOnShown(event -> SocketServerService.startClipService());
 
         //set the stage to be able to close the application and stop the clipboard service
-        stage.setOnCloseRequest(event ->  ClipService.stopClipService());
+        stage.setOnCloseRequest(event ->  SocketServerService.stopClipService());
 
         stage.show(); // display main window
 
