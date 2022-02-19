@@ -19,10 +19,16 @@ module com.o4codes.copaste {
     requires org.kordamp.ikonli.javafx;
     requires io.javalin;
     requires kotlin.stdlib;
+    requires org.eclipse.jetty.websocket.api;
+    requires org.eclipse.jetty.websocket.client;
+//    requires com.google.gson;
+//    requires org.hildan.fxgson;
 
     opens com.o4codes.copaste to javafx.fxml;
+    opens com.o4codes.copaste.controllers to javafx.fxml;
+
     exports com.o4codes.copaste;
     exports com.o4codes.copaste.controllers;
     exports com.o4codes.copaste.models;
-    opens com.o4codes.copaste.controllers to javafx.fxml;
+
 }

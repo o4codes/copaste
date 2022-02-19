@@ -1,43 +1,48 @@
 package com.o4codes.copaste.services;
 
-import com.o4codes.copaste.MainApp;
+
+//import com.google.gson.Gson;
+import com.o4codes.copaste.models.Clip;
+import com.o4codes.copaste.utils.Session;
+import org.eclipse.jetty.websocket.client.WebSocketClient;
+//import org.hildan.fxgson.FxGson;
 
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.WebSocket;
 import java.nio.ByteBuffer;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 public class WebClientService implements WebSocket.Listener {
 
 
     @Override
     public void onOpen(WebSocket webSocket) {
-//        webSocket.request(6);
+        webSocket.request(1);
         System.out.println("onOpen using subprotocol " + webSocket.getSubprotocol());
         WebSocket.Listener.super.onOpen(webSocket);
     }
 
     @Override
     public CompletionStage<?> onText(WebSocket webSocket, CharSequence data, boolean last) {
-//        MainApp.latch.countDown();
-        webSocket.request(6);
+        webSocket.request(1);
         System.out.println("onText received " + data);
+//        Gson gson = new Gson();
+//        Session.clip = gson.fromJson(data.toString(), Clip.class);
+        System.out.println(Session.clip.getContent());
         return WebSocket.Listener.super.onText(webSocket, data, last);
     }
 
     @Override
     public void onError(WebSocket webSocket, Throwable error) {
-        System.out.println("Bad day! " + webSocket.toString());
+        System.out.println("Clip Client Closed! " + webSocket.toString());
         WebSocket.Listener.super.onError(webSocket, error);
     }
 
     @Override
     public CompletionStage<?> onClose(WebSocket webSocket, int statusCode, String reason) {
         System.out.println("onClose " + statusCode + " " + reason);
+        Session.latch.countDown();
         return WebSocket.Listener.super.onClose(webSocket, statusCode, reason);
     }
 
@@ -58,15 +63,21 @@ public class WebClientService implements WebSocket.Listener {
     }
 
     public void startClient() throws InterruptedException {
-        System.out.println("Starting client");
+        new Thread(() -> {
+            System.out.println("Starting client");
 
-        WebSocket ws = HttpClient
-                .newHttpClient()
-                .newWebSocketBuilder()
-                .buildAsync(URI.create("ws://127.0.0.1:7235/clip"), this)
-                .join();
+            WebSocket ws = HttpClient
+                    .newHttpClient()
+                    .newWebSocketBuilder()
+                    .buildAsync(URI.create("ws://127.0.0.1:7235/clip"), this)
+                    .join();
 
-        while(true){}
+//            Gson gson = FxGson.create();
+//            while (true) {
+//                ws.sendText(gson.toJson(Session.clip), true);
+//            }
+        }).start();
+
     }
 
 

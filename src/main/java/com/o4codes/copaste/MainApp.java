@@ -49,8 +49,8 @@ public class MainApp extends Application {
         stage.show(); // display main window
 
 
-        WebClientService service = new WebClientService();
-        service.startClient();
+//        WebClientService service = new WebClientService();
+//        service.startClient();
     }
 
     //show a help window

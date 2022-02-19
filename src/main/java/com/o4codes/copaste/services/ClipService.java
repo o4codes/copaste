@@ -3,12 +3,15 @@ package com.o4codes.copaste.services;
 import com.o4codes.copaste.models.Clip;
 import com.o4codes.copaste.utils.Session;
 import io.javalin.Javalin;
-import io.javalin.http.Context;
 import io.javalin.http.staticfiles.Location;
+import io.javalin.websocket.WsContext;
+
+import static com.o4codes.copaste.utils.Session.usersMap;
 
 public class ClipService {
     static Javalin app;
     static String message = "testing";
+
     public static void startClipService() {
         app = Javalin.create(config -> {
             config.addStaticFiles(staticFileConfig -> {
@@ -31,6 +34,12 @@ public class ClipService {
         }
     }
 
+    public static void broadCastMessage(Clip clipObject, WsContext sender){
+        usersMap.keySet().stream()
+                .filter(ctx -> !ctx.equals(sender))
+                .filter(ctx -> ctx.session.isOpen())
+                .forEach(session -> session.send(clipObject));
+    }
 
     public static void setupRoutes() {
         app.get("/api/v1", ctx -> {
@@ -52,14 +61,21 @@ public class ClipService {
 
         app.ws("/clip", ws -> {
             ws.onConnect(ctx -> {
+                System.out.println(ctx.getSessionId());
+                usersMap.put(ctx, ctx.getSessionId());
                 ctx.send(Session.clip);
             });
 
             ws.onMessage(ctx -> {
-                if (ctx.message() != ""){
-                    message = ctx.message();
+                try {
+                    broadCastMessage(ctx.messageAsClass(Clip.class), ctx);
+                } catch (Exception e) {
+                    ctx.send("Invalid message body structure");
                 }
-                ctx.send(message);
+            });
+
+            ws.onClose(ctx -> {
+                System.out.println("ClipService: WebSocket closed");
             });
         });
     }

@@ -78,6 +78,14 @@
             <version>12.2.0</version>
             <scope>compile</scope>
         </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>org.hildan.fxgson</groupId>-->
+<!--            <artifactId>fx-gson</artifactId>-->
+<!--            <version>4.0.1</version>-->
+<!--            <type>pom</type>-->
+<!--        </dependency>-->
+
     </dependencies>
 
     <build>

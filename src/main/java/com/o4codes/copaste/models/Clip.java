@@ -4,6 +4,7 @@ import javafx.beans.property.SimpleStringProperty;
 import java.util.Date;
 
 public class Clip {
+
     private String user;
     private SimpleStringProperty content = new SimpleStringProperty("No Content");
     private String contentType;
