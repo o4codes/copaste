@@ -1,6 +1,7 @@
 package com.o4codes.copaste.services;
 
 import com.o4codes.copaste.utils.Session;
+
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.WebSocket;
@@ -51,17 +52,16 @@ public class SocketClientService implements WebSocket.Listener {
         return WebSocket.Listener.super.onPong(webSocket, message);
     }
 
-    public void startClient(){
-            System.out.println("Starting client");
-            Session.webSocketClient = HttpClient
-                    .newHttpClient()
-                    .newWebSocketBuilder()
-                    .buildAsync(URI.create("ws://127.0.0.1:7235/clip"), this)
-                    .join();
+    public void startClient() {
+        System.out.println("Starting client");
+        Session.webSocketClient = HttpClient
+                .newHttpClient()
+                .newWebSocketBuilder()
+                .buildAsync(URI.create("ws://127.0.0.1:7235/clip"), this)
+                .join();
 
-            // executes a scheduled server ping every 1 minute
-            Session.executor.scheduleAtFixedRate(() -> Session.webSocketClient.sendPing(ByteBuffer.wrap("ping".getBytes())), 1,1, TimeUnit.MINUTES);
-
+        // executes a scheduled server ping every 1 minute
+        Session.executor.scheduleAtFixedRate(() -> Session.webSocketClient.sendPing(ByteBuffer.wrap("ping".getBytes())), 1, 1, TimeUnit.MINUTES);
     }
 
     public void stopClient() {
@@ -70,7 +70,7 @@ public class SocketClientService implements WebSocket.Listener {
             Session.webSocketClient = null;
         }
 
-        if (!Session.executor.isShutdown()){
+        if (!Session.executor.isShutdown()) {
             Session.executor.shutdown();
         }
 

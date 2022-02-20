@@ -1,9 +1,7 @@
 package com.o4codes.copaste.utils;
 
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.net.UnknownHostException;
+import java.io.IOException;
+import java.net.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -16,8 +14,17 @@ public class NetworkUtils {
         return 0;
     }
 
-    public static boolean isServerReachable(){
-        return false;
+    // check if server is possible to connect
+    public static boolean isServerReachable(String ipAddress, int portNumber) {
+
+        Socket socket = new Socket();
+        try {
+            socket.connect( new InetSocketAddress( ipAddress, portNumber ) );
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+
     }
 
     //checks if ip address is valid
