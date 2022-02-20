@@ -24,7 +24,6 @@ import java.util.concurrent.CountDownLatch;
 
 
 public class MainApp extends Application {
-    public static CountDownLatch latch = new CountDownLatch(1);
 
     @Override
     public void start(Stage stage) throws IOException, InterruptedException {

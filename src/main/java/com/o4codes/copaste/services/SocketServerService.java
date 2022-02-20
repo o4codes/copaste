@@ -77,7 +77,7 @@ public class SocketServerService {
             });
 
             ws.onClose(ctx -> {
-                System.out.println("Socket Service: WebSocket closed");
+                usersMap.remove(ctx);
             });
         });
     }

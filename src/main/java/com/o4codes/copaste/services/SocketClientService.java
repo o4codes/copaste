@@ -1,15 +1,12 @@
 package com.o4codes.copaste.services;
 
-
-//import com.google.gson.Gson;
 import com.o4codes.copaste.utils.Session;
-//import org.hildan.fxgson.FxGson;
-
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.WebSocket;
 import java.nio.ByteBuffer;
 import java.util.concurrent.CompletionStage;
+import java.util.concurrent.TimeUnit;
 
 public class SocketClientService implements WebSocket.Listener {
 
@@ -37,7 +34,6 @@ public class SocketClientService implements WebSocket.Listener {
     @Override
     public CompletionStage<?> onClose(WebSocket webSocket, int statusCode, String reason) {
         System.out.println("onClose " + statusCode + " " + reason);
-        Session.latch.countDown();
         return WebSocket.Listener.super.onClose(webSocket, statusCode, reason);
     }
 
@@ -45,7 +41,6 @@ public class SocketClientService implements WebSocket.Listener {
     public CompletionStage<?> onPing(WebSocket webSocket, ByteBuffer message) {
         webSocket.request(1);
         System.out.println("onPing " + message);
-        webSocket.sendPong(message);
         return WebSocket.Listener.super.onPing(webSocket, message);
     }
 
@@ -53,20 +48,31 @@ public class SocketClientService implements WebSocket.Listener {
     public CompletionStage<?> onPong(WebSocket webSocket, ByteBuffer message) {
         webSocket.request(1);
         System.out.println("onPong " + message);
-        webSocket.sendPing(message);
         return WebSocket.Listener.super.onPong(webSocket, message);
     }
 
-    public void startClient() throws InterruptedException {
-        new Thread(() -> {
+    public void startClient(){
             System.out.println("Starting client");
-
-            WebSocket ws = HttpClient
+            Session.webSocketClient = HttpClient
                     .newHttpClient()
                     .newWebSocketBuilder()
                     .buildAsync(URI.create("ws://127.0.0.1:7235/clip"), this)
                     .join();
-        }).start();
+
+            // executes a scheduled server ping every 1 minute
+            Session.executor.scheduleAtFixedRate(() -> Session.webSocketClient.sendPing(ByteBuffer.wrap("ping".getBytes())), 1,1, TimeUnit.MINUTES);
+
+    }
+
+    public void stopClient() {
+        if (Session.webSocketClient != null) {
+            Session.webSocketClient.sendClose(1000, "Closing client");
+            Session.webSocketClient = null;
+        }
+
+        if (!Session.executor.isShutdown()){
+            Session.executor.shutdown();
+        }
 
     }
 
