@@ -1,6 +1,7 @@
 package com.o4codes.copaste.controllers;
 
 import com.o4codes.copaste.MainApp;
+import com.o4codes.copaste.services.ClipBoardService;
 import com.o4codes.copaste.services.SocketServerService;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.fxml.FXML;
@@ -82,6 +83,9 @@ public class RootController implements Initializable {
 
         createConnBtn.setOnAction(event -> {
             try {
+                SocketServerService.startSocketServer();
+                ClipBoardService.startClipBoardListener();
+
                 MainApp.clipViewStage().show();
                 createConnBtn.getScene().getWindow().hide();
             } catch (IOException e) {

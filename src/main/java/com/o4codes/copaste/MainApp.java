@@ -1,9 +1,6 @@
 package com.o4codes.copaste;
 
-import com.o4codes.copaste.services.ClipBoardService;
-import com.o4codes.copaste.services.SocketClientService;
 import com.o4codes.copaste.services.SocketServerService;
-import com.o4codes.copaste.utils.Helper;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -21,37 +18,32 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.kordamp.ikonli.javafx.FontIcon;
 
-import java.awt.*;
 import java.io.IOException;
-import java.util.concurrent.CountDownLatch;
-
-import static java.lang.System.out;
 
 
 public class MainApp extends Application {
 
     @Override
-    public void start(Stage stage) throws IOException, InterruptedException {
+    public void start(Stage stage) throws IOException {
+        showRootView(stage).show();
+    }
+
+
+    public static Stage showRootView(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("fxml/root.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
 
         //stage decorations
+        if (stage == null){
+            stage = new Stage();
+        }
         stage.setTitle("ClipShare");
         stage.initStyle(StageStyle.UNDECORATED);
         stage.setScene(scene);
 
-        // set up services
-        stage.setOnShown(event -> SocketServerService.startSocketServer());
-
         //set the stage to be able to close the application and stop the clipboard service
-        stage.setOnCloseRequest(event ->  SocketServerService.stopSocketServer());
-
-        stage.show(); // display main window
-
-
-        //start the clipboard service
-        ClipBoardService.startClipBoardListener();
-
+        stage.setOnCloseRequest(event -> SocketServerService.stopSocketServer());
+        return stage;
     }
 
     //show a help window
@@ -75,7 +67,7 @@ public class MainApp extends Application {
 
         Label descriptionLabel = new Label();
 
-        String description= "This application allows you to share your clipboard with other users.\n" +
+        String description = "This application allows you to share your clipboard with other users.\n" +
                 "Ctrl C on your device to copy a text to the clipboard.\n" +
                 "Ctrl V on the other device to paste text copied.\n" +
                 "ClipShare will automatically save the text to the clipboard.\n";
@@ -96,6 +88,7 @@ public class MainApp extends Application {
         return stage;
     }
 
+
     public static Stage clipViewStage() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("fxml/clipView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
@@ -110,11 +103,12 @@ public class MainApp extends Application {
         return stage;
     }
 
-    public static HBox bottomFragment(Node parent){
+
+    public static HBox bottomFragment(Node parent) {
         HBox hBox = new HBox();
         hBox.setAlignment(Pos.TOP_RIGHT);
         hBox.setSpacing(20);
-        hBox.setPadding(new Insets(0,20,0,0));
+        hBox.setPadding(new Insets(0, 20, 0, 0));
         hBox.setPrefHeight(34);
 
         Label settingsLabel = new Label("Settings");
@@ -145,6 +139,7 @@ public class MainApp extends Application {
         hBox.getChildren().addAll(settingsLabel, helpLabel);
         return hBox;
     }
+
 
 
     public static void main(String[] args) {

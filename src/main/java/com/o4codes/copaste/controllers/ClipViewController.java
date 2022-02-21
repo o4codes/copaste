@@ -1,7 +1,10 @@
 package com.o4codes.copaste.controllers;
 
 import com.o4codes.copaste.MainApp;
+import com.o4codes.copaste.services.ClipBoardService;
+import com.o4codes.copaste.services.SocketClientService;
 import com.o4codes.copaste.services.SocketServerService;
+import com.o4codes.copaste.utils.Session;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXScrollPane;
 import io.github.palexdev.materialfx.controls.enums.ButtonType;
@@ -19,6 +22,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.kordamp.ikonli.javafx.FontIcon;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -72,6 +76,22 @@ public class ClipViewController implements Initializable {
         closeBtn.setOnAction(event -> {
             SocketServerService.stopSocketServer();
             System.exit(0);
+        });
+        
+        disconnectBtn.setOnAction(event -> {
+            try {
+                if (Session.webSocketClient != null){
+                    SocketClientService.stopClient();
+                }
+                else {
+                    SocketServerService.stopSocketServer();
+                }
+                ClipBoardService.stopClipBoardListener();
+                MainApp.showRootView(null).show();
+                this.disconnectBtn.getScene().getWindow().hide();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
 
     }

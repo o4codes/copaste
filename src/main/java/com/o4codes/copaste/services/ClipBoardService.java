@@ -92,10 +92,12 @@ public class ClipBoardService implements ClipboardOwner, Runnable {
         });
 
         Session.clipListenerThread.start();
+        out.println("Clipboard listener started");
     }
 
     public static void stopClipBoardListener(){
         Session.clipListenerThread.interrupt();
         Session.clipListenerThread = null;
+        out.println("Clipboard Listener stopped");
     }
 }

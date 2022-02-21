@@ -69,7 +69,7 @@ public class SocketClientService implements WebSocket.Listener {
         Session.executor.scheduleAtFixedRate(() -> Session.webSocketClient.sendPing(ByteBuffer.wrap("ping".getBytes())), 1, 1, TimeUnit.MINUTES);
     }
 
-    public void stopClient() {
+    public static void stopClient() {
         if (Session.webSocketClient != null) {
             Session.webSocketClient.sendClose(1000, "Closing client");
             Session.webSocketClient = null;
