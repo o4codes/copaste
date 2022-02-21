@@ -14,6 +14,7 @@ module com.o4codes.copaste {
     requires MaterialFX;
     requires java.prefs;
     requires java.net.http;
+    requires java.desktop;
 
     requires org.controlsfx.controls;
     requires org.kordamp.ikonli.javafx;
@@ -21,8 +22,7 @@ module com.o4codes.copaste {
     requires kotlin.stdlib;
     requires org.eclipse.jetty.websocket.api;
     requires org.eclipse.jetty.websocket.client;
-//    requires com.google.gson;
-//    requires org.hildan.fxgson;
+    requires com.fasterxml.jackson.databind;
 
     opens com.o4codes.copaste to javafx.fxml;
     opens com.o4codes.copaste.controllers to javafx.fxml;

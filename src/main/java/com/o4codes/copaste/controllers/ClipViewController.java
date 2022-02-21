@@ -70,7 +70,7 @@ public class ClipViewController implements Initializable {
         });
 
         closeBtn.setOnAction(event -> {
-            SocketServerService.stopClipService();
+            SocketServerService.stopSocketServer();
             System.exit(0);
         });
 

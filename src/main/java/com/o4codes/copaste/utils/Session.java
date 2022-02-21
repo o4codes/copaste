@@ -19,5 +19,6 @@ public class Session {
     public static CountDownLatch latch = new CountDownLatch(1);
     public static Map<WsContext, String> usersMap = new ConcurrentHashMap<>();
     public static ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+    public static Thread clipListenerThread;
     public static WebSocket webSocketClient;
 }

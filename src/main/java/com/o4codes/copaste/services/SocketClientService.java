@@ -1,5 +1,8 @@
 package com.o4codes.copaste.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.o4codes.copaste.models.Clip;
 import com.o4codes.copaste.utils.Session;
 
 import java.net.URI;
@@ -52,6 +55,8 @@ public class SocketClientService implements WebSocket.Listener {
         return WebSocket.Listener.super.onPong(webSocket, message);
     }
 
+
+
     public void startClient() {
         System.out.println("Starting client");
         Session.webSocketClient = HttpClient
@@ -74,6 +79,15 @@ public class SocketClientService implements WebSocket.Listener {
             Session.executor.shutdown();
         }
 
+    }
+
+
+    public static void sendClip(Clip clip) throws JsonProcessingException {
+        if (Session.webSocketClient != null) {
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonString = mapper.writeValueAsString(clip);
+            Session.webSocketClient.sendText(jsonString, true);
+        }
     }
 
 

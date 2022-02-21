@@ -1,7 +1,9 @@
 package com.o4codes.copaste;
 
+import com.o4codes.copaste.services.ClipBoardService;
 import com.o4codes.copaste.services.SocketClientService;
 import com.o4codes.copaste.services.SocketServerService;
+import com.o4codes.copaste.utils.Helper;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -19,8 +21,11 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.kordamp.ikonli.javafx.FontIcon;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
+
+import static java.lang.System.out;
 
 
 public class MainApp extends Application {
@@ -36,16 +41,17 @@ public class MainApp extends Application {
         stage.setScene(scene);
 
         // set up services
-        stage.setOnShown(event -> SocketServerService.startServer());
+        stage.setOnShown(event -> SocketServerService.startSocketServer());
 
         //set the stage to be able to close the application and stop the clipboard service
-        stage.setOnCloseRequest(event ->  SocketServerService.stopClipService());
+        stage.setOnCloseRequest(event ->  SocketServerService.stopSocketServer());
 
         stage.show(); // display main window
 
 
-        SocketClientService socketClient= new SocketClientService();
-        socketClient.startClient();
+        //start the clipboard service
+        ClipBoardService.startClipBoardListener();
+
     }
 
     //show a help window

@@ -11,9 +11,7 @@ import static com.o4codes.copaste.utils.Session.usersMap;
 public class SocketServerService {
     static Javalin app;
 
-
-
-    public static void startServer() {
+    public static void startSocketServer() {
         app = Javalin.create(config -> {
             config.addStaticFiles(staticFileConfig -> {
                 staticFileConfig.hostedPath = "/";
@@ -25,7 +23,7 @@ public class SocketServerService {
         System.out.println("Socket Service started");
     }
 
-    public static void stopClipService() {
+    public static void stopSocketServer() {
         if (app != null && app.jettyServer().started) {
             app.stop();
             System.out.println("ClipService stopped");
@@ -40,6 +38,12 @@ public class SocketServerService {
                 .filter(ctx -> !ctx.equals(sender))
                 .filter(ctx -> ctx.session.isOpen())
                 .forEach(session -> session.send(clipObject));
+    }
+
+    public static void sendClip(Clip clip) {
+        usersMap.keySet().stream()
+                .filter(ctx -> ctx.session.isOpen())
+                .forEach(session -> session.send(clip));
     }
 
     public static void setupRoutes() {

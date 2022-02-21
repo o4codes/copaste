@@ -1,5 +1,11 @@
 package com.o4codes.copaste.utils;
 
+import com.o4codes.copaste.services.ClipBoardService;
+
+import java.awt.*;
+
+import static java.lang.System.out;
+
 public class Helper {
 
     public static boolean checkStringForLetters(String s){

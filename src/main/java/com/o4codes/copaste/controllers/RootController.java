@@ -53,7 +53,7 @@ public class RootController implements Initializable {
         });
 
         closeBtn.setOnAction(event -> {
-            SocketServerService.stopClipService();
+            SocketServerService.stopSocketServer();
             System.exit(0);
         });
 
