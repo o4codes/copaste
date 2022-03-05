@@ -65,7 +65,7 @@ public class SocketServerService {
 
         app.put("/api/v1/clip", ctx -> {
            Clip clip =  ctx.bodyValidator(Clip.class)
-                    .check(obj -> obj.getCreatedAt() > Session.clip.getCreatedAt(), "Clip is older than last one")
+                    .check(obj -> Long.valueOf(obj.getCreatedAt()) > Long.valueOf(Session.clip.getCreatedAt()), "Clip is older than last one")
                     .get();
 
            Session.clip = clip;

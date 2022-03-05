@@ -4,6 +4,7 @@ import com.o4codes.copaste.models.Clip;
 import com.o4codes.copaste.models.Config;
 import com.o4codes.copaste.services.AppPreferenceService;
 import io.javalin.websocket.WsContext;
+import javafx.beans.property.SimpleStringProperty;
 
 import java.net.http.WebSocket;
 import java.util.Map;
@@ -22,4 +23,7 @@ public class Session {
     public static Thread clipListenerThread;
     public static WebSocket webSocketClient;
     public static final String CONNECTION_PORT = "7235";
+
+    public SimpleStringProperty user = new SimpleStringProperty("None");
+    public SimpleStringProperty content = new SimpleStringProperty("No Content");
 }

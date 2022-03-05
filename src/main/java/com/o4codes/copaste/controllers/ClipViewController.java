@@ -140,6 +140,8 @@ public class ClipViewController implements Initializable {
     private void initBindings() throws SocketException {
         connectionAddressLbl.setText(NetworkUtils.getSystemNetworkConfig().getHostAddress()+":"+Session.CONNECTION_PORT);
         clipContentLbl.textProperty().bind(Session.clip.content);
+        clipDeviceNameLbl.textProperty().bind(Session.clip.user);
+        clipDateTimeContent.textProperty().bind(Session.clip.createdAt);
 
     }
 

@@ -5,24 +5,24 @@ import java.util.Date;
 
 public class Clip {
 
-    private String user;
+    public SimpleStringProperty user = new SimpleStringProperty("None");
     public SimpleStringProperty content = new SimpleStringProperty("No Content");
     private String contentType;
-    public long createdAt;
+    public SimpleStringProperty createdAt = new SimpleStringProperty("1234");
 
     public Clip(){
-        this.createdAt = new Date().getTime();
+        this.createdAt.set(String.valueOf(new Date().getTime()));
     }
 
     public Clip(String user, String content, String contentType) {
-        this.user = user;
+        this.user.set(user);
         this.content.set(content);
         this.contentType = contentType;
-        this.createdAt = new Date().getTime();
+        this.createdAt.set(String.valueOf(new Date().getTime()));
     }
 
     public String getUser() {
-        return this.user;
+        return this.user.get();
     }
 
     public String getContent() {
@@ -33,12 +33,16 @@ public class Clip {
         return this.contentType;
     }
 
-    public long getCreatedAt() {
-        return createdAt;
+    public String getCreatedAt() {
+        return createdAt.get();
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt.set(createdAt);
     }
 
     public void setUser(String user) {
-        this.user = user;
+        this.user.set(user);
     }
 
     public void setContent(String content) {
