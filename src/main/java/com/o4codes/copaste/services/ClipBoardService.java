@@ -60,6 +60,7 @@ public class ClipBoardService implements ClipboardOwner, Runnable {
             }
 
         }
+        out.println("Regained ownership");
     }
 
 
@@ -87,7 +88,9 @@ public class ClipBoardService implements ClipboardOwner, Runnable {
     }
 
     public void clipListener(){
-//        final Clipboard SYSTEM_CLIPBOARD = Toolkit.getDefaultToolkit().getSystemClipboard();
+        /**
+         * Listens for data being copied........
+         */
         SYSTEM_CLIPBOARD.addFlavorListener(listener -> {
 
             String clipboardText = null;
@@ -95,10 +98,10 @@ public class ClipBoardService implements ClipboardOwner, Runnable {
                 clipboardText = (String) SYSTEM_CLIPBOARD.getData(DataFlavor.stringFlavor);
                 SYSTEM_CLIPBOARD.setContents(new StringSelection(clipboardText), null);
 
-                Session.clip = new Clip(Session.config.getName(), clipboardText, "text/plain");
+                Clip clip = new Clip(Session.config.getName(), clipboardText, "text/plain");
+                Platform.runLater(() -> Session.clip.copyProperties(clip)); // update the UI
 
-                // code to put clip on server
-//                this.broadCastClip(Session.clip);
+                this.broadCastClip(Session.clip); // sends clip to server
                 out.println("Copied: " + Session.clip.getContent());
             } catch (UnsupportedFlavorException | IOException e) {
                 e.printStackTrace();
@@ -121,10 +124,18 @@ public class ClipBoardService implements ClipboardOwner, Runnable {
             Session.clipListenerThread.interrupt();
             Session.clipListenerThread = null;
             Arrays.stream(SYSTEM_CLIPBOARD.getFlavorListeners()).forEach(SYSTEM_CLIPBOARD::removeFlavorListener);
+            out.println("Clipboard Listener stopped");
         }
-
-        out.println("Clipboard Listener stopped");
     }
 
+    public static void sendToClipBoard(String text){
+//        SYSTEM_CLIPBOARD.setContents(new StringSelection(text), null);
+        Toolkit.getDefaultToolkit()
+                .getSystemClipboard()
+                .setContents(
+                        new StringSelection(text),
+                        null
+                );
+    }
 
 }

@@ -49,6 +49,12 @@ public class Clip {
         this.contentType = contentType;
     }
 
+    public void copyProperties(Clip obj) {
+        this.setUser(obj.getUser());
+        this.setContent(obj.getContent());
+        this.setContentType(obj.getContentType());
+
+    }
 
 }
 

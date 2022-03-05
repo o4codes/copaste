@@ -5,6 +5,7 @@ import com.o4codes.copaste.utils.Session;
 import io.javalin.Javalin;
 import io.javalin.http.staticfiles.Location;
 import io.javalin.websocket.WsContext;
+import javafx.application.Platform;
 
 import static com.o4codes.copaste.utils.Session.usersMap;
 
@@ -34,6 +35,9 @@ public class SocketServerService {
     }
 
     public static void broadCastMessage(Clip clipObject, WsContext sender){
+        /**
+         * Sends clip object to all websocket subcribers except sender
+         */
         usersMap.keySet().stream()
                 .filter(ctx -> !ctx.equals(sender))
                 .filter(ctx -> ctx.session.isOpen())
@@ -41,6 +45,10 @@ public class SocketServerService {
     }
 
     public static void sendClip(Clip clip) {
+        /**
+         * Sends clip object to all websocket subscribers
+         */
+
         usersMap.keySet().stream()
                 .filter(ctx -> ctx.session.isOpen())
                 .forEach(session -> session.send(clip));
@@ -73,7 +81,10 @@ public class SocketServerService {
 
             ws.onMessage(ctx -> {
                 try {
-                    Session.clip = ctx.messageAsClass(Clip.class);
+                    Platform.runLater(() -> Session.clip.copyProperties(ctx.messageAsClass(Clip.class)));
+
+//                    System.out.println(Session.clip.getContent());
+                    ClipBoardService.sendToClipBoard(Session.clip.getContent());
                     broadCastMessage(ctx.messageAsClass(Clip.class), ctx);
                 } catch (Exception e) {
                     ctx.send("Invalid message body structure");

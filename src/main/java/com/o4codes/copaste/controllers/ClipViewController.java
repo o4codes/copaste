@@ -142,4 +142,6 @@ public class ClipViewController implements Initializable {
         clipContentLbl.textProperty().bind(Session.clip.content);
 
     }
+
+
 }

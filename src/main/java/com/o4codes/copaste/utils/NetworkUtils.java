@@ -42,8 +42,6 @@ public class NetworkUtils {
         ArrayList<NetworkInterface> workingInterfaces = new ArrayList<>();
         for (NetworkInterface networkInterface : Collections.list( nets )) {
             if (!networkInterface.isLoopback() && networkInterface.isUp()) {
-                System.out.println( "Display Name: " + networkInterface.getDisplayName() );
-                System.out.println( "Name: " + networkInterface.getName() );
                 workingInterfaces.add( networkInterface );
             }
         }
@@ -52,7 +50,6 @@ public class NetworkUtils {
             for (InetAddress inetAddress : Collections.list( inetAddressEnumeration )) {
                 System.out.println( "InetAddress: " + inetAddress );
                 if (!checkStringForLetters( inetAddress.getHostAddress() ) && !inetAddress.getHostAddress().equals( "192.168.137.1" )) {
-                    System.out.println( "Ip address found: " + inetAddress.getHostAddress() );
                     inet.add( inetAddress );
                     break;
                 }
