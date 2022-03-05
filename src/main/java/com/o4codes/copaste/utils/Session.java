@@ -21,4 +21,5 @@ public class Session {
     public static ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
     public static Thread clipListenerThread;
     public static WebSocket webSocketClient;
+    public static final String CONNECTION_PORT = "7235";
 }

@@ -8,13 +8,14 @@ import javafx.application.Platform;
 import java.awt.*;
 import java.awt.datatransfer.*;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.function.Consumer;
 
 import static java.lang.System.out;
 
 
 public class ClipBoardService implements ClipboardOwner, Runnable {
-    private final Clipboard SYSTEM_CLIPBOARD = Toolkit.getDefaultToolkit().getSystemClipboard(); //get system clipboard
+    public static final Clipboard SYSTEM_CLIPBOARD = Toolkit.getDefaultToolkit().getSystemClipboard(); //get system clipboard
     private final Consumer<String> bufferConsumer;
 
 
@@ -24,25 +25,26 @@ public class ClipBoardService implements ClipboardOwner, Runnable {
 
     //listen to clipboard changes
     public void ClipBoardListener() {
-        this.SYSTEM_CLIPBOARD.addFlavorListener( listener -> {
+        this.SYSTEM_CLIPBOARD.addFlavorListener(listener -> {
             try {
-                Transferable contents = SYSTEM_CLIPBOARD.getContents( this );
-                getOwnership( contents );
-                String clip = (String) SYSTEM_CLIPBOARD.getData( DataFlavor.stringFlavor );
-                Platform.runLater( () -> {
+                Transferable contents = SYSTEM_CLIPBOARD.getContents(this);
+                if (contents.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+                    String clip = (String) SYSTEM_CLIPBOARD.getData(DataFlavor.stringFlavor);
+                    bufferConsumer.accept(clip);
                     Session.clip = new Clip(Session.config.getName(), clip, "text/plain");
-                } );
-                System.out.println( "Copied: " + Session.clip.getContent() );
+                    out.println("Copied: " + Session.clip.getContent());
 
-                // code to put clip on server
-                this.broadCastClip(Session.clip);
-                Toolkit.getDefaultToolkit().beep();
-
+                    // code to put clip on server
+                    this.broadCastClip(Session.clip);
+                    Toolkit.getDefaultToolkit().beep();
+                }
+                getOwnership(contents);
             } catch (UnsupportedFlavorException | IOException e) {
                 e.printStackTrace();
             }
-        } );
+        });
     }
+
 
     @Override
     public void lostOwnership(Clipboard clipboard, Transferable notUsed) {
@@ -57,15 +59,15 @@ public class ClipBoardService implements ClipboardOwner, Runnable {
                 e.printStackTrace();
             }
 
-
         }
     }
 
 
     @Override
     public void run() {
-        Transferable transferable = SYSTEM_CLIPBOARD.getContents( this );
-        getOwnership( transferable );
+//        Transferable transferable = SYSTEM_CLIPBOARD.getContents( this );
+//        getOwnership( transferable );
+        clipListener();
     }
 
     private void getOwnership(Transferable transferable) {
@@ -84,20 +86,45 @@ public class ClipBoardService implements ClipboardOwner, Runnable {
         }
     }
 
-    public static void startClipBoardListener(){
-        Session.clipListenerThread = new Thread(() -> {
-            ClipBoardService clipboardService = new ClipBoardService( out::println );
-            EventQueue.invokeLater( clipboardService );
-            clipboardService.ClipBoardListener();
+    public void clipListener(){
+//        final Clipboard SYSTEM_CLIPBOARD = Toolkit.getDefaultToolkit().getSystemClipboard();
+        SYSTEM_CLIPBOARD.addFlavorListener(listener -> {
+
+            String clipboardText = null;
+            try {
+                clipboardText = (String) SYSTEM_CLIPBOARD.getData(DataFlavor.stringFlavor);
+                SYSTEM_CLIPBOARD.setContents(new StringSelection(clipboardText), null);
+
+                Session.clip = new Clip(Session.config.getName(), clipboardText, "text/plain");
+
+                // code to put clip on server
+//                this.broadCastClip(Session.clip);
+                out.println("Copied: " + Session.clip.getContent());
+            } catch (UnsupportedFlavorException | IOException e) {
+                e.printStackTrace();
+            }
+
+
         });
+    }
+
+    public static void startClipBoardListener(){
+        Session.clipListenerThread = new Thread(new ClipBoardService(out::println));
 
         Session.clipListenerThread.start();
+
         out.println("Clipboard listener started");
     }
 
     public static void stopClipBoardListener(){
-        Session.clipListenerThread.interrupt();
-        Session.clipListenerThread = null;
+        if (Session.clipListenerThread.isAlive() && Session.clipListenerThread != null){
+            Session.clipListenerThread.interrupt();
+            Session.clipListenerThread = null;
+            Arrays.stream(SYSTEM_CLIPBOARD.getFlavorListeners()).forEach(SYSTEM_CLIPBOARD::removeFlavorListener);
+        }
+
         out.println("Clipboard Listener stopped");
     }
+
+
 }

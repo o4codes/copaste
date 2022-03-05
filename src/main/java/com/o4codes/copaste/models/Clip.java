@@ -6,7 +6,7 @@ import java.util.Date;
 public class Clip {
 
     private String user;
-    private SimpleStringProperty content = new SimpleStringProperty("No Content");
+    public SimpleStringProperty content = new SimpleStringProperty("No Content");
     private String contentType;
     public long createdAt;
 

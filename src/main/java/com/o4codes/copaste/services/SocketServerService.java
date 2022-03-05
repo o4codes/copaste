@@ -18,7 +18,7 @@ public class SocketServerService {
                 staticFileConfig.directory = "/com/o4codes/copaste/public";
                 staticFileConfig.location = Location.CLASSPATH;
             });
-        }).start(7235);
+        }).start(Integer.valueOf(Session.CONNECTION_PORT));
         setupRoutes(); // setup server routes
         System.out.println("Socket Service started");
     }

@@ -4,6 +4,7 @@ import com.o4codes.copaste.MainApp;
 import com.o4codes.copaste.services.ClipBoardService;
 import com.o4codes.copaste.services.SocketClientService;
 import com.o4codes.copaste.services.SocketServerService;
+import com.o4codes.copaste.utils.NetworkUtils;
 import com.o4codes.copaste.utils.Session;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXScrollPane;
@@ -23,6 +24,7 @@ import javafx.stage.Stage;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.IOException;
+import java.net.SocketException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -94,6 +96,11 @@ public class ClipViewController implements Initializable {
             }
         });
 
+        try {
+            initBindings();
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
     }
 
     private void setEmptyClipHistory(){
@@ -111,7 +118,6 @@ public class ClipViewController implements Initializable {
     }
 
     public Node clipCard(String clipText){
-
         HBox rootPane = new HBox();
         rootPane.getStyleClass().add("primary-container");
         rootPane.setAlignment(Pos.CENTER_LEFT);
@@ -129,5 +135,11 @@ public class ClipViewController implements Initializable {
 
         rootPane.getChildren().addAll(label, copyBtn);
         return rootPane;
+    }
+
+    private void initBindings() throws SocketException {
+        connectionAddressLbl.setText(NetworkUtils.getSystemNetworkConfig().getHostAddress()+":"+Session.CONNECTION_PORT);
+        clipContentLbl.textProperty().bind(Session.clip.content);
+
     }
 }
