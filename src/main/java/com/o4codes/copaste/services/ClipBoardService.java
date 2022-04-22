@@ -120,6 +120,7 @@ public class ClipBoardService implements ClipboardOwner, Runnable {
     }
 
     public static void stopClipBoardListener(){
+        // TODO: clip board listener is not stopping
         if (Session.clipListenerThread.isAlive() && Session.clipListenerThread != null){
             Session.clipListenerThread.interrupt();
             Session.clipListenerThread = null;

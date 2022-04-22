@@ -3,6 +3,8 @@ package com.o4codes.copaste.controllers;
 import com.o4codes.copaste.MainApp;
 import com.o4codes.copaste.services.ClipBoardService;
 import com.o4codes.copaste.services.SocketServerService;
+import com.o4codes.copaste.utils.NetworkUtils;
+import com.o4codes.copaste.utils.ViewUtils;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -58,7 +60,6 @@ public class RootController implements Initializable {
             System.exit(0);
         });
 
-
     }
 
 
@@ -83,11 +84,22 @@ public class RootController implements Initializable {
 
         createConnBtn.setOnAction(event -> {
             try {
-                SocketServerService.startSocketServer();
-                ClipBoardService.startClipBoardListener();
+                if (NetworkUtils.getSystemNetworkConfig() != null) {
+                    SocketServerService.startSocketServer(); //start the server
+                    ClipBoardService.startClipBoardListener(); // start the clipboard listener
 
-                MainApp.clipViewStage().show();
-                createConnBtn.getScene().getWindow().hide();
+                    MainApp.clipViewStage().show();
+                    createConnBtn.getScene().getWindow().hide();
+
+                    ViewUtils.showSuccessNotification("Server Started","Server is running");
+                }
+
+                else {
+                    ViewUtils.showErrorNotification("Network Error","No network is found");
+                }
+
+
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
