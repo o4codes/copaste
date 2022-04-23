@@ -117,3 +117,23 @@
 .dark-border {
     -fx-border-color: #e0e0e0;
 }
+
+.blue-border {
+    -fx-border-color: dodgerblue;
+}
+
+.grey-background {
+    -fx-background-color: #eeeeee;
+}
+
+.card {
+    -fx-background-color: #eeeeee;
+    -fx-border-color: dodgerblue;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-border-width: 2;
+}
+
+.dark-text {
+    -fx-text-fill: #424242;
+}

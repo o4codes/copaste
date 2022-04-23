@@ -4,7 +4,7 @@ import com.o4codes.copaste.MainApp;
 import com.o4codes.copaste.services.ClipBoardService;
 import com.o4codes.copaste.services.SocketServerService;
 import com.o4codes.copaste.utils.NetworkUtils;
-import com.o4codes.copaste.utils.ViewUtils;
+import com.o4codes.copaste.utils.ViewComponents;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -91,11 +91,11 @@ public class RootController implements Initializable {
                     MainApp.clipViewStage().show();
                     createConnBtn.getScene().getWindow().hide();
 
-                    ViewUtils.showSuccessNotification("Server Started","Server is running");
+                    ViewComponents.showSuccessNotification("Server Started","Server is running");
                 }
 
                 else {
-                    ViewUtils.showErrorNotification("Network Error","No network is found");
+                    ViewComponents.showErrorNotification("Network Error","No network is found");
                 }
 
 
