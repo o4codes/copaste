@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class RootController implements Initializable {
+public class RootViewController implements Initializable {
 
     @FXML
     private BorderPane rootPane;
@@ -56,14 +56,20 @@ public class RootController implements Initializable {
         });
 
         closeBtn.setOnAction(event -> {
-            SocketServerService.stopSocketServer();
-            System.exit(0);
+            event.consume();
+            Stage stage = (Stage) closeBtn.getScene().getWindow();
+            boolean result = AlertComponents.showConfirmAlert(
+                    stage, "Confirm", "Are you sure you want to exit?");
+
+            if (result) {
+                SocketServerService.stopSocketServer();
+                stage.close();
+            }
         });
 
     }
 
-
-    public Node connectionChoiceFragment() {
+    private Node connectionChoiceFragment() {
         VBox vBox = new VBox();
         vBox.setAlignment(Pos.CENTER);
         vBox.setSpacing(30);
@@ -106,7 +112,7 @@ public class RootController implements Initializable {
     }
 
 
-    public Node joinConnectionPane(){
+    private Node joinConnectionPane(){
         VBox vBox = new VBox();
         vBox.setAlignment(Pos.CENTER);
         VBox.setVgrow(vBox, javafx.scene.layout.Priority.ALWAYS);

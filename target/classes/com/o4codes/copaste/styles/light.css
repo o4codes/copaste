@@ -137,3 +137,21 @@
 .dark-text {
     -fx-text-fill: #424242;
 }
+
+.confirm-btn {
+    -fx-border-color: dodgerblue;
+    -fx-border-radius: 8px;
+    -fx-text-fill: #424242;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 20px;
+}
+
+.dismiss-btn {
+    -fx-border-color: red;
+    -fx-border-radius: 8px;
+    -fx-text-fill: #424242;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 20px;
+}

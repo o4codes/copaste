@@ -36,7 +36,19 @@ public class ViewComponents {
         stage.setScene(scene);
 
         //set the stage to be able to close the application and stop the clipboard service
-        stage.setOnCloseRequest(event -> SocketServerService.stopSocketServer());
+        Stage finalStage = stage;
+
+        stage.setOnCloseRequest(event -> {
+            event.consume();
+            boolean result = AlertComponents.showConfirmAlert(
+                    finalStage, "Confirm", "Are you sure you want to exit?");
+            if (result) {
+                SocketServerService.stopSocketServer();
+                finalStage.close();
+            }
+
+        });
+
         return stage;
     }
 

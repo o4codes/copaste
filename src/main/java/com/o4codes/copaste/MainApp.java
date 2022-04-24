@@ -1,6 +1,7 @@
 package com.o4codes.copaste;
 
 
+import com.o4codes.copaste.views.AlertComponents;
 import com.o4codes.copaste.views.ViewComponents;
 import javafx.application.Application;
 import javafx.stage.Stage;
