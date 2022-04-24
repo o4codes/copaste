@@ -1,5 +1,6 @@
 package com.o4codes.copaste.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.o4codes.copaste.MainApp;
 import com.o4codes.copaste.services.ClipBoardService;
 import com.o4codes.copaste.services.SocketClientService;
@@ -136,7 +137,13 @@ public class ClipViewController implements Initializable {
         copyBtn.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         copyBtn.setGraphic(fontIcon);
         copyBtn.setButtonType(ButtonType.RAISED);
-
+        copyBtn.setOnAction(event -> {
+            try {
+                ClipBoardService.copyToClipBoard(clipText);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+        });
         rootPane.getChildren().addAll(label, copyBtn);
         HBox.setHgrow(label, Priority.ALWAYS);
         return rootPane;

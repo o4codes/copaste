@@ -66,8 +66,6 @@ public class ClipBoardService implements ClipboardOwner, Runnable {
 
     @Override
     public void run() {
-//        Transferable transferable = SYSTEM_CLIPBOARD.getContents( this );
-//        getOwnership( transferable );
         clipListener();
     }
 
@@ -79,12 +77,14 @@ public class ClipBoardService implements ClipboardOwner, Runnable {
         getOwnership( new StringSelection( buffer ) );
     }
 
-    public void broadCastClip(Clip clip) throws JsonProcessingException {
+    public static void broadCastClip(Clip clip) throws JsonProcessingException {
         if (Session.webSocketClient != null) {
             SocketClientService.sendClip(clip);
         } else {
             SocketServerService.sendClip(clip);
         }
+
+        Platform.runLater(() -> Session.clip.copyProperties(clip));
     }
 
     public void clipListener(){
@@ -92,7 +92,6 @@ public class ClipBoardService implements ClipboardOwner, Runnable {
          * Listens for data being copied........
          */
         SYSTEM_CLIPBOARD.addFlavorListener(listener -> {
-
             String clipboardText = null;
             try {
                 clipboardText = (String) SYSTEM_CLIPBOARD.getData(DataFlavor.stringFlavor);
@@ -100,43 +99,37 @@ public class ClipBoardService implements ClipboardOwner, Runnable {
 
                 Clip clip = new Clip(Session.config.getName(), clipboardText, "text/plain");
                 Platform.runLater(() -> Session.clip.copyProperties(clip)); // update the UI
-
                 this.broadCastClip(Session.clip); // sends clip to server
                 out.println("Copied: " + Session.clip.getContent());
             } catch (UnsupportedFlavorException | IOException e) {
                 e.printStackTrace();
             }
 
-
         });
     }
 
     public static void startClipBoardListener(){
         Session.clipListenerThread = new Thread(new ClipBoardService(out::println));
-
         Session.clipListenerThread.start();
-
         out.println("Clipboard listener started");
     }
 
     public static void stopClipBoardListener(){
-        // TODO: clip board listener is not stopping
-        if (Session.clipListenerThread.isAlive() && Session.clipListenerThread != null){
-            Session.clipListenerThread.interrupt();
-            Session.clipListenerThread = null;
-            Arrays.stream(SYSTEM_CLIPBOARD.getFlavorListeners()).forEach(SYSTEM_CLIPBOARD::removeFlavorListener);
-            out.println("Clipboard Listener stopped");
-        }
+        Session.clipListenerThread.interrupt();
+        Session.clipListenerThread = null;
+        Arrays.stream(SYSTEM_CLIPBOARD.getFlavorListeners()).forEach(SYSTEM_CLIPBOARD::removeFlavorListener);
+        out.println("Clipboard Listener stopped");
     }
 
-    public static void sendToClipBoard(String text){
-//        SYSTEM_CLIPBOARD.setContents(new StringSelection(text), null);
+    public static void copyToClipBoard(String text) throws JsonProcessingException {
+        Clip clip = new Clip(Session.config.getName(), text, "text/plain");
         Toolkit.getDefaultToolkit()
                 .getSystemClipboard()
                 .setContents(
                         new StringSelection(text),
                         null
                 );
+        broadCastClip(clip);
     }
 
 }

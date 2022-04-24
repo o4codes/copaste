@@ -84,7 +84,7 @@ public class SocketServerService {
                     Platform.runLater(() -> Session.clip.copyProperties(ctx.messageAsClass(Clip.class)));
 
 //                    System.out.println(Session.clip.getContent());
-                    ClipBoardService.sendToClipBoard(Session.clip.getContent());
+                    ClipBoardService.copyToClipBoard(Session.clip.getContent());
                     broadCastMessage(ctx.messageAsClass(Clip.class), ctx);
                 } catch (Exception e) {
                     ctx.send("Invalid message body structure");
