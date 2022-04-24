@@ -111,7 +111,6 @@ public class RootViewController implements Initializable {
         return vBox;
     }
 
-
     private Node joinConnectionPane(){
         VBox vBox = new VBox();
         vBox.setAlignment(Pos.CENTER);
@@ -131,10 +130,10 @@ public class RootViewController implements Initializable {
         btnPane.setMaxWidth(Double.MAX_VALUE);
         VBox.setMargin(btnPane, new Insets(40,0,0,0));
 
-        MFXButton homeBtn = new MFXButton("Home");
-        homeBtn.getStyleClass().add("secondary-button");
-        homeBtn.setMaxWidth(Double.MAX_VALUE);
-        homeBtn.setOnAction(event -> {
+        MFXButton backBtn = new MFXButton("Back");
+        backBtn.getStyleClass().add("secondary-button");
+        backBtn.setMaxWidth(Double.MAX_VALUE);
+        backBtn.setOnAction(event -> {
             fragmentsPane.getChildren().clear();
             fragmentsPane.getChildren().add(connectionChoiceFragment());
         });
@@ -142,10 +141,24 @@ public class RootViewController implements Initializable {
         MFXButton proceedBtn = new MFXButton("Proceed");
         proceedBtn.getStyleClass().add("primary-button");
         proceedBtn.setMaxWidth(Double.MAX_VALUE);
+        proceedBtn.setOnAction(event -> {
+            if (URLfield.getText().isEmpty()) {
+                AlertComponents.showErrorNotification("Empty URL", "Please enter host URL");
+            }
+
+            else {
+                String hostURL = URLfield.getText();
+                if (!NetworkUtils.isValidIPAddress(hostURL))
+                    AlertComponents.showErrorNotification("Invalid URL", "Please enter valid URL");
+
+
+
+            }
+        });
 
         HBox.setHgrow(proceedBtn, Priority.ALWAYS);
-        HBox.setHgrow(homeBtn, Priority.ALWAYS);
-        btnPane.getChildren().addAll(homeBtn, proceedBtn);
+        HBox.setHgrow(backBtn, Priority.ALWAYS);
+        btnPane.getChildren().addAll(backBtn, proceedBtn);
         addressLabel.setLabelFor(URLfield);
         vBox.getChildren().addAll(addressLabel, URLfield, btnPane);
         return vBox;

@@ -1,11 +1,5 @@
 package com.o4codes.copaste.utils;
 
-import com.o4codes.copaste.services.ClipBoardService;
-
-import java.awt.*;
-
-import static java.lang.System.out;
-
 public class Helper {
 
     public static boolean checkStringForLetters(String s){
@@ -14,6 +8,16 @@ public class Helper {
 
     public static boolean checkStringForNumbers(String string) {
         return string.matches("[0-9]+");
+    }
+
+    public static String getIPAddressFromURL(String url){
+        String[] urlParts = url.split(":");
+        return urlParts[0];
+    }
+
+    public static String getPortFromURL(String url){
+        String[] urlParts = url.split(":");
+        return urlParts[1];
     }
 
 }

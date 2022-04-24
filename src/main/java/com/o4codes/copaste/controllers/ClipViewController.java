@@ -119,7 +119,7 @@ public class ClipViewController implements Initializable {
         clipHistoryPane.getChildren().add(root);
     }
 
-    public Node clipCard(String clipText){
+    private Node clipCard(String clipText){
         HBox rootPane = new HBox();
         rootPane.getStyleClass().add("card");
         rootPane.setAlignment(Pos.CENTER_LEFT);

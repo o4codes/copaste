@@ -31,7 +31,7 @@ public class ViewComponents {
         if (stage == null){
             stage = new Stage();
         }
-        stage.setTitle("ClipShare");
+        stage.setTitle("CoPaste");
         stage.initStyle(StageStyle.UNDECORATED);
         stage.setScene(scene);
 
@@ -74,11 +74,12 @@ public class ViewComponents {
         Label descriptionLabel = new Label();
 
         String description = """
-                This application allows you to share your clipboard with other users.
-                Ctrl C on your device to copy a text to the clipboard.
-                Ctrl V on the other device to paste text copied.
-                ClipShare will automatically save the text to the clipboard.
-                """;
+            This application allows you to share your clipboard with other users.
+            Ctrl C on your device to copy a text to the clipboard.
+            Ctrl V on the other device to paste text copied.
+            ClipShare will automatically save the text to the clipboard.
+            You can also share your clipboard with other users.
+            """;
 
         descriptionLabel.setText(description);
         descriptionLabel.setWrapText(true);
@@ -100,7 +101,6 @@ public class ViewComponents {
     public static Stage clipViewStage() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("fxml/clipView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-
         Stage stage = new Stage();
 
         //stage decorations
