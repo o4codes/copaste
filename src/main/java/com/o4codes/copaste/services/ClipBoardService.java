@@ -23,28 +23,6 @@ public class ClipBoardService implements ClipboardOwner, Runnable {
         this.bufferConsumer = bufferConsumer;
     }
 
-    //listen to clipboard changes
-    public void ClipBoardListener() {
-        this.SYSTEM_CLIPBOARD.addFlavorListener(listener -> {
-            try {
-                Transferable contents = SYSTEM_CLIPBOARD.getContents(this);
-                if (contents.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-                    String clip = (String) SYSTEM_CLIPBOARD.getData(DataFlavor.stringFlavor);
-                    bufferConsumer.accept(clip);
-                    Session.clip = new Clip(Session.config.getName(), clip, "text/plain");
-                    out.println("Copied: " + Session.clip.getContent());
-
-                    // code to put clip on server
-                    this.broadCastClip(Session.clip);
-                    Toolkit.getDefaultToolkit().beep();
-                }
-                getOwnership(contents);
-            } catch (UnsupportedFlavorException | IOException e) {
-                e.printStackTrace();
-            }
-        });
-    }
-
 
     @Override
     public void lostOwnership(Clipboard clipboard, Transferable notUsed) {
@@ -73,10 +51,6 @@ public class ClipBoardService implements ClipboardOwner, Runnable {
         SYSTEM_CLIPBOARD.setContents( transferable, this );
     }
 
-    public void setBuffer(String buffer) {
-        getOwnership( new StringSelection( buffer ) );
-    }
-
     public static void broadCastClip(Clip clip) throws JsonProcessingException {
         if (Session.webSocketClient != null) {
             SocketClientService.sendClip(clip);
@@ -88,18 +62,14 @@ public class ClipBoardService implements ClipboardOwner, Runnable {
     }
 
     public void clipListener(){
-        /**
-         * Listens for data being copied........
-         */
         SYSTEM_CLIPBOARD.addFlavorListener(listener -> {
-            String clipboardText = null;
             try {
-                clipboardText = (String) SYSTEM_CLIPBOARD.getData(DataFlavor.stringFlavor);
+                String clipboardText = (String) SYSTEM_CLIPBOARD.getData(DataFlavor.stringFlavor);
                 SYSTEM_CLIPBOARD.setContents(new StringSelection(clipboardText), null);
 
                 Clip clip = new Clip(Session.config.getName(), clipboardText, "text/plain");
                 Platform.runLater(() -> Session.clip.copyProperties(clip)); // update the UI
-                this.broadCastClip(Session.clip); // sends clip to server
+                broadCastClip(Session.clip); // sends clip to server
                 out.println("Copied: " + Session.clip.getContent());
             } catch (UnsupportedFlavorException | IOException e) {
                 e.printStackTrace();

@@ -1,16 +1,15 @@
 package com.o4codes.copaste.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.o4codes.copaste.MainApp;
 import com.o4codes.copaste.services.ClipBoardService;
 import com.o4codes.copaste.services.SocketClientService;
 import com.o4codes.copaste.services.SocketServerService;
 import com.o4codes.copaste.utils.NetworkUtils;
 import com.o4codes.copaste.utils.Session;
+import com.o4codes.copaste.views.ViewComponents;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXScrollPane;
 import io.github.palexdev.materialfx.controls.enums.ButtonType;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -28,6 +27,7 @@ import org.kordamp.ikonli.javafx.FontIcon;
 import java.io.IOException;
 import java.net.SocketException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class ClipViewController implements Initializable {
@@ -63,7 +63,7 @@ public class ClipViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        rootPane.setBottom(MainApp.bottomFragment(rootPane));
+        rootPane.setBottom(ViewComponents.bottomFragment(rootPane));
         setEmptyClipHistory();
 
         closeBtn.getParent().setOnMousePressed(event -> {
@@ -91,7 +91,7 @@ public class ClipViewController implements Initializable {
                     SocketServerService.stopSocketServer();
                 }
                 ClipBoardService.stopClipBoardListener();
-                MainApp.showRootView(null).show();
+                ViewComponents.showRootView(null).show();
                 this.disconnectBtn.getScene().getWindow().hide();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -150,7 +150,9 @@ public class ClipViewController implements Initializable {
     }
 
     private void initBindings() throws SocketException {
-        connectionAddressLbl.setText(NetworkUtils.getSystemNetworkConfig().getHostAddress()+":"+Session.CONNECTION_PORT);
+        connectionAddressLbl.setText(Objects.requireNonNull(NetworkUtils
+                .getSystemNetworkConfig())
+                .getHostAddress()+":"+Session.CONNECTION_PORT);
         clipContentLbl.textProperty().bind(Session.clip.content);
         clipDeviceNameLbl.textProperty().bind(Session.clip.user);
         clipDateTimeContent.textProperty().bind(Session.clip.createdAt);
@@ -161,10 +163,9 @@ public class ClipViewController implements Initializable {
 
             if (clipHistoryChildren.get(0).getStyleClass()
                     .stream()
-                    .anyMatch(style -> style == "root")){
+                    .anyMatch(style -> Objects.equals(style, "root"))){
                 clipHistoryPane.getChildren().clear();
             }
-
 
             if (clipHistoryChildren.size() < 10) {
                 clipHistoryPane.getChildren().add(0, clipCard(newValue));

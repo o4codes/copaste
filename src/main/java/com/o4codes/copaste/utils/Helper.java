@@ -16,6 +16,4 @@ public class Helper {
         return string.matches("[0-9]+");
     }
 
-
-
 }

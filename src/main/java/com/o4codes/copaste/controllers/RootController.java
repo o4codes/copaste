@@ -1,10 +1,10 @@
 package com.o4codes.copaste.controllers;
 
-import com.o4codes.copaste.MainApp;
 import com.o4codes.copaste.services.ClipBoardService;
 import com.o4codes.copaste.services.SocketServerService;
 import com.o4codes.copaste.utils.NetworkUtils;
-import com.o4codes.copaste.utils.ViewComponents;
+import com.o4codes.copaste.views.ViewComponents;
+import com.o4codes.copaste.views.AlertComponents;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -40,7 +40,7 @@ public class RootController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        rootPane.setBottom(MainApp.bottomFragment(rootPane));
+        rootPane.setBottom(ViewComponents.bottomFragment(rootPane));
         //set init fragment
         fragmentsPane.getChildren().add(connectionChoiceFragment());
 
@@ -67,7 +67,7 @@ public class RootController implements Initializable {
         VBox vBox = new VBox();
         vBox.setAlignment(Pos.CENTER);
         vBox.setSpacing(30);
-        VBox.setVgrow(vBox, javafx.scene.layout.Priority.ALWAYS);
+        VBox.setVgrow(vBox, Priority.ALWAYS);
 
         MFXButton joinConnBtn = new MFXButton("Join Connection");
         joinConnBtn.getStyleClass().add("secondary-button");
@@ -88,18 +88,14 @@ public class RootController implements Initializable {
                     SocketServerService.startSocketServer(); //start the server
                     ClipBoardService.startClipBoardListener(); // start the clipboard listener
 
-                    MainApp.clipViewStage().show();
+                    ViewComponents.clipViewStage().show();
                     createConnBtn.getScene().getWindow().hide();
 
-                    ViewComponents.showSuccessNotification("Server Started","Server is running");
+                    AlertComponents.showSuccessNotification("Server Started","Server is running");
                 }
-
                 else {
-                    ViewComponents.showErrorNotification("Network Error","No network is found");
+                    AlertComponents.showErrorNotification("Network Error","No network is found");
                 }
-
-
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
