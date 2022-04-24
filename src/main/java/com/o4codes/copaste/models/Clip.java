@@ -1,6 +1,8 @@
 package com.o4codes.copaste.models;
 import javafx.beans.property.SimpleStringProperty;
-
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 public class Clip {
@@ -18,7 +20,9 @@ public class Clip {
         this.user.set(user);
         this.content.set(content);
         this.contentType = contentType;
-        this.createdAt.set(String.valueOf(new Date().getTime()));
+        this.createdAt.set(LocalTime.now()
+                .truncatedTo(ChronoUnit.SECONDS)
+                .format(DateTimeFormatter.ISO_LOCAL_TIME));
     }
 
     public String getUser() {
@@ -57,7 +61,9 @@ public class Clip {
         this.setUser(obj.getUser());
         this.setContent(obj.getContent());
         this.setContentType(obj.getContentType());
-
+        this.createdAt.set(LocalTime.now()
+                .truncatedTo(ChronoUnit.SECONDS)
+                .format(DateTimeFormatter.ISO_LOCAL_TIME));
     }
 
 }

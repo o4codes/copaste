@@ -15,6 +15,7 @@ module com.o4codes.copaste {
     requires java.prefs;
     requires java.net.http;
     requires java.desktop;
+    requires java.base;
 
     requires org.controlsfx.controls;
     requires org.kordamp.ikonli.javafx;
