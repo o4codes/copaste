@@ -1,8 +1,11 @@
 package com.o4codes.copaste.controllers;
 
 import com.o4codes.copaste.services.ClipBoardService;
+import com.o4codes.copaste.services.SocketClientService;
 import com.o4codes.copaste.services.SocketServerService;
+import com.o4codes.copaste.utils.Helper;
 import com.o4codes.copaste.utils.NetworkUtils;
+import com.o4codes.copaste.utils.Session;
 import com.o4codes.copaste.views.ViewComponents;
 import com.o4codes.copaste.views.AlertComponents;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -149,10 +152,30 @@ public class RootViewController implements Initializable {
             else {
                 String hostURL = URLfield.getText();
                 if (!NetworkUtils.isValidIPAddress(hostURL))
-                    AlertComponents.showErrorNotification("Invalid URL", "Please enter valid URL");
+                    AlertComponents.showErrorNotification("Invalid IPAddress",
+                            "Please enter valid IPAddress");
 
+                else {
+                    String ipAddress = Helper.getIPAddressFromURL(hostURL);
 
+                    System.out.println(ipAddress + " " + Session.CONNECTION_PORT);
+                    if (NetworkUtils.isServerReachable(ipAddress, Integer.parseInt(Session.CONNECTION_PORT))){
 
+                        try {
+                            new SocketClientService().startClient(hostURL, Session.CONNECTION_PORT);
+                            ClipBoardService.startClipBoardListener(); // start the clipboard listener
+                            ViewComponents.clipViewStage().show();
+                            backBtn.getScene().getWindow().hide();
+                            AlertComponents.showSuccessNotification("Connected","Connected to server");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    else {
+                        AlertComponents.showErrorNotification("Connection Error", "Server is not reachable");
+                    }
+                }
             }
         });
 

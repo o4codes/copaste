@@ -56,17 +56,18 @@ public class SocketClientService implements WebSocket.Listener {
     }
 
 
-
-    public void startClient() {
+    public void startClient(String hostUrl, String port) {
         System.out.println("Starting client");
         Session.webSocketClient = HttpClient
                 .newHttpClient()
                 .newWebSocketBuilder()
-                .buildAsync(URI.create("ws://127.0.0.1:7235/clip"), this)
+                .buildAsync(URI.create(String.format("ws://%s:%s/clip", hostUrl, port)), this)
                 .join();
 
         // executes a scheduled server ping every 1 minute
-        Session.executor.scheduleAtFixedRate(() -> Session.webSocketClient.sendPing(ByteBuffer.wrap("ping".getBytes())), 1, 1, TimeUnit.MINUTES);
+        Session.executor.scheduleAtFixedRate(() -> Session.webSocketClient
+                .sendPing(ByteBuffer
+                        .wrap("ping".getBytes())), 1, 1, TimeUnit.MINUTES);
     }
 
     public static void stopClient() {

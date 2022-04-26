@@ -7,25 +7,25 @@ import io.javalin.http.staticfiles.Location;
 import io.javalin.websocket.WsContext;
 import javafx.application.Platform;
 
+import java.util.Objects;
+
 import static com.o4codes.copaste.utils.Session.usersMap;
 
 public class SocketServerService {
     static Javalin app;
 
     public static void startSocketServer() {
-        app = Javalin.create(config -> {
-            config.addStaticFiles(staticFileConfig -> {
-                staticFileConfig.hostedPath = "/";
-                staticFileConfig.directory = "/com/o4codes/copaste/public";
-                staticFileConfig.location = Location.CLASSPATH;
-            });
-        }).start(Integer.valueOf(Session.CONNECTION_PORT));
+        app = Javalin.create(config -> config.addStaticFiles(staticFileConfig -> {
+            staticFileConfig.hostedPath = "/";
+            staticFileConfig.directory = "/com/o4codes/copaste/public";
+            staticFileConfig.location = Location.CLASSPATH;
+        })).start(Integer.parseInt(Session.CONNECTION_PORT));
         setupRoutes(); // setup server routes
         System.out.println("Socket Service started");
     }
 
     public static void stopSocketServer() {
-        if (app != null && app.jettyServer().started) {
+        if (app != null && Objects.requireNonNull(app.jettyServer()).started) {
             app.stop();
             System.out.println("ClipService stopped");
         }
@@ -35,9 +35,6 @@ public class SocketServerService {
     }
 
     public static void broadCastMessage(Clip clipObject, WsContext sender){
-        /**
-         * Sends clip object to all websocket subcribers except sender
-         */
         usersMap.keySet().stream()
                 .filter(ctx -> !ctx.equals(sender))
                 .filter(ctx -> ctx.session.isOpen())
@@ -45,30 +42,21 @@ public class SocketServerService {
     }
 
     public static void sendClip(Clip clip) {
-        /**
-         * Sends clip object to all websocket subscribers
-         */
-
         usersMap.keySet().stream()
                 .filter(ctx -> ctx.session.isOpen())
                 .forEach(session -> session.send(clip));
     }
 
     public static void setupRoutes() {
-        app.get("/api/v1", ctx -> {
-            ctx.result("CoPaste API");
-        });
+        app.get("/api/v1", ctx -> ctx.result("CoPaste API"));
 
-        app.get("/api/v1/clip", ctx -> {
-            ctx.json(Session.clip);
-        });
+        app.get("/api/v1/clip", ctx -> ctx.json(Session.clip));
 
         app.put("/api/v1/clip", ctx -> {
-           Clip clip =  ctx.bodyValidator(Clip.class)
-                    .check(obj -> Long.valueOf(obj.getCreatedAt()) > Long.valueOf(Session.clip.getCreatedAt()), "Clip is older than last one")
+           Session.clip =  ctx.bodyValidator(Clip.class)
+                    .check(obj -> Long.parseLong(obj.getCreatedAt()) > Long.parseLong(Session.clip.getCreatedAt()), "Clip is older than last one")
                     .get();
 
-           Session.clip = clip;
            ctx.result("Clip updated").status(200);
         });
 
@@ -91,9 +79,7 @@ public class SocketServerService {
                 }
             });
 
-            ws.onClose(ctx -> {
-                usersMap.remove(ctx);
-            });
+            ws.onClose(ctx -> usersMap.remove(ctx));
         });
     }
 

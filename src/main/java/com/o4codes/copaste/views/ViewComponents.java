@@ -72,7 +72,6 @@ public class ViewComponents {
 
 
         Label descriptionLabel = new Label();
-
         String description = """
             This application allows you to share your clipboard with other users.
             Ctrl C on your device to copy a text to the clipboard.
