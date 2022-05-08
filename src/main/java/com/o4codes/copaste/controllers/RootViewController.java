@@ -100,10 +100,9 @@ public class RootViewController implements Initializable {
                     ViewComponents.clipViewStage().show();
                     createConnBtn.getScene().getWindow().hide();
 
-                    AlertComponents.showSuccessNotification("Server Started","Server is running");
-                }
-                else {
-                    AlertComponents.showErrorNotification("Network Error","No network is found");
+                    AlertComponents.showSuccessNotification("Server Started", "Server is running");
+                } else {
+                    AlertComponents.showErrorNotification("Network Error", "No network is found");
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -114,7 +113,7 @@ public class RootViewController implements Initializable {
         return vBox;
     }
 
-    private Node joinConnectionPane(){
+    private Node joinConnectionPane() {
         VBox vBox = new VBox();
         vBox.setAlignment(Pos.CENTER);
         VBox.setVgrow(vBox, javafx.scene.layout.Priority.ALWAYS);
@@ -131,7 +130,7 @@ public class RootViewController implements Initializable {
         HBox btnPane = new HBox();
         btnPane.setSpacing(20);
         btnPane.setMaxWidth(Double.MAX_VALUE);
-        VBox.setMargin(btnPane, new Insets(40,0,0,0));
+        VBox.setMargin(btnPane, new Insets(40, 0, 0, 0));
 
         MFXButton backBtn = new MFXButton("Back");
         backBtn.getStyleClass().add("secondary-button");
@@ -147,36 +146,34 @@ public class RootViewController implements Initializable {
         proceedBtn.setOnAction(event -> {
             if (URLfield.getText().isEmpty()) {
                 AlertComponents.showErrorNotification("Empty URL", "Please enter host URL");
+                return;
             }
 
-            else {
-                String hostURL = URLfield.getText();
-                if (!NetworkUtils.isValidIPAddress(hostURL))
-                    AlertComponents.showErrorNotification("Invalid IPAddress",
-                            "Please enter valid IPAddress");
+            String hostURL = URLfield.getText();
+            if (!NetworkUtils.isValidIPAddress(hostURL)) {
+                AlertComponents.showErrorNotification("Invalid IPAddress",
+                        "Please enter valid IPAddress");
+                return;
+            }
 
-                else {
-                    String ipAddress = Helper.getIPAddressFromURL(hostURL);
+            String ipAddress = Helper.getIPAddressFromURL(hostURL);
 
-                    System.out.println(ipAddress + " " + Session.CONNECTION_PORT);
-                    if (NetworkUtils.isServerReachable(ipAddress, Integer.parseInt(Session.CONNECTION_PORT))){
+            System.out.println(ipAddress + " " + Session.CONNECTION_PORT);
+            if (NetworkUtils.isServerReachable(ipAddress, Integer.parseInt(Session.CONNECTION_PORT))) {
 
-                        try {
-                            new SocketClientService().startClient(hostURL, Session.CONNECTION_PORT);
-                            ClipBoardService.startClipBoardListener(); // start the clipboard listener
-                            ViewComponents.clipViewStage().show();
-                            backBtn.getScene().getWindow().hide();
-                            AlertComponents.showSuccessNotification("Connected","Connected to server");
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    else {
-                        AlertComponents.showErrorNotification("Connection Error", "Server is not reachable");
-                    }
+                try {
+                    new SocketClientService().startClient(hostURL, Session.CONNECTION_PORT);
+                    ClipBoardService.startClipBoardListener(); // start the clipboard listener
+                    ViewComponents.clipViewStage().show();
+                    backBtn.getScene().getWindow().hide();
+                    AlertComponents.showSuccessNotification("Connected", "Connected to server");
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
+            } else {
+                AlertComponents.showErrorNotification("Connection Error", "Server is not reachable");
             }
+
         });
 
         HBox.setHgrow(proceedBtn, Priority.ALWAYS);

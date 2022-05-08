@@ -6,16 +6,19 @@ import com.o4codes.copaste.services.SocketClientService;
 import com.o4codes.copaste.services.SocketServerService;
 import com.o4codes.copaste.utils.NetworkUtils;
 import com.o4codes.copaste.utils.Session;
+import com.o4codes.copaste.views.AlertComponents;
 import com.o4codes.copaste.views.ViewComponents;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXScrollPane;
 import io.github.palexdev.materialfx.controls.enums.ButtonType;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
@@ -82,22 +85,9 @@ public class ClipViewController implements Initializable {
             System.exit(0);
         });
         
-        disconnectBtn.setOnAction(event -> {
-            try {
-                if (Session.webSocketClient != null){
-                    SocketClientService.stopClient();
-                }
-                else {
-                    SocketServerService.stopSocketServer();
-                }
-                ClipBoardService.stopClipBoardListener();
-                ViewComponents.showRootView(null).show();
-                this.disconnectBtn.getScene().getWindow().hide();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
+        disconnectBtn.setOnAction(event -> disconnectAction());
 
+        // initialise bindings and listener events
         try {
             initBindings();
         } catch (SocketException e) {
@@ -149,6 +139,22 @@ public class ClipViewController implements Initializable {
         return rootPane;
     }
 
+    private void disconnectAction() {
+        try {
+            if (Session.webSocketClient != null){
+                SocketClientService.stopClient();
+            }
+            else {
+                SocketServerService.stopSocketServer();
+            }
+            ClipBoardService.stopClipBoardListener();
+            ViewComponents.showRootView(null).show();
+            this.disconnectBtn.getScene().getWindow().hide();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void initBindings() throws SocketException {
         connectionAddressLbl.setText(Objects.requireNonNull(NetworkUtils
                 .getSystemNetworkConfig())
@@ -177,6 +183,20 @@ public class ClipViewController implements Initializable {
             }
 
         } );
+
+        Session.isClientConnected.addListener((observable, oldValue, newValue) -> {
+            System.out.println(newValue);
+            if (!newValue) {
+                Platform.runLater(() -> {
+                    AlertComponents.showInfoPopUp(
+                            clipHistoryPane.getScene().getWindow(),
+                            "Server Closed",
+                            "Connection from the server is closed");
+                    disconnectAction();
+
+                });
+            }
+        });
 
     }
 

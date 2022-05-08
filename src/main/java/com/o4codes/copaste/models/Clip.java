@@ -1,4 +1,6 @@
 package com.o4codes.copaste.models;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.beans.property.SimpleStringProperty;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -66,5 +68,14 @@ public class Clip {
                 .format(DateTimeFormatter.ISO_LOCAL_TIME));
     }
 
+    public static Clip toObject(String jsonData) throws JsonProcessingException {
+        System.out.println(jsonData);
+        return new ObjectMapper().readValue(jsonData, Clip.class);
+    }
+
+    public String toJson() throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(this);
+    }
 }
 

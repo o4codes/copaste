@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.o4codes.copaste.models.Clip;
 import com.o4codes.copaste.utils.Session;
+import javafx.application.Platform;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -26,6 +27,13 @@ public class SocketClientService implements WebSocket.Listener {
     public CompletionStage<?> onText(WebSocket webSocket, CharSequence data, boolean last) {
         webSocket.request(1);
         System.out.println("onText received " + data);
+        try {
+            Clip clip = Clip.toObject(data.toString());
+            System.out.println("Converted text is "+clip.toString());
+            Platform.runLater(() -> Session.clip.copyProperties(clip));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
         return WebSocket.Listener.super.onText(webSocket, data, last);
     }
 
@@ -38,6 +46,7 @@ public class SocketClientService implements WebSocket.Listener {
     @Override
     public CompletionStage<?> onClose(WebSocket webSocket, int statusCode, String reason) {
         System.out.println("onClose " + statusCode + " " + reason);
+        Session.isClientConnected.set(false);
         return WebSocket.Listener.super.onClose(webSocket, statusCode, reason);
     }
 
@@ -58,6 +67,7 @@ public class SocketClientService implements WebSocket.Listener {
 
     public void startClient(String hostUrl, String port) {
         System.out.println("Starting client");
+        System.out.println(Session.executor.isShutdown());
         Session.webSocketClient = HttpClient
                 .newHttpClient()
                 .newWebSocketBuilder()
@@ -68,6 +78,8 @@ public class SocketClientService implements WebSocket.Listener {
         Session.executor.scheduleAtFixedRate(() -> Session.webSocketClient
                 .sendPing(ByteBuffer
                         .wrap("ping".getBytes())), 1, 1, TimeUnit.MINUTES);
+
+        Session.isClientConnected.set(true);
     }
 
     public static void stopClient() {
@@ -77,16 +89,14 @@ public class SocketClientService implements WebSocket.Listener {
         }
 
         if (!Session.executor.isShutdown()) {
-            Session.executor.shutdown();
+            Session.executor.shutdownNow();
         }
-
+        Session.isClientConnected.set(false);
     }
-
 
     public static void sendClip(Clip clip) throws JsonProcessingException {
         if (Session.webSocketClient != null) {
-            ObjectMapper mapper = new ObjectMapper();
-            String jsonString = mapper.writeValueAsString(clip);
+            String jsonString = clip.toJson();
             Session.webSocketClient.sendText(jsonString, true);
         }
     }

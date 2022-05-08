@@ -1,5 +1,6 @@
 package com.o4codes.copaste.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.o4codes.copaste.models.Clip;
 import com.o4codes.copaste.utils.Session;
 import io.javalin.Javalin;
@@ -68,15 +69,17 @@ public class SocketServerService {
             });
 
             ws.onMessage(ctx -> {
-                try {
-                    Platform.runLater(() -> Session.clip.copyProperties(ctx.messageAsClass(Clip.class)));
+                    Platform.runLater(() -> {
+                        try {
+                            Session.clip.copyProperties(ctx.messageAsClass(Clip.class));
+                            ClipBoardService.copyToClipBoard(Session.clip.getContent());
+                            broadCastMessage(ctx.messageAsClass(Clip.class), ctx);
+                        } catch (JsonProcessingException e) {
+                            throw new RuntimeException(e);
+                        }
 
+                    });
 //                    System.out.println(Session.clip.getContent());
-                    ClipBoardService.copyToClipBoard(Session.clip.getContent());
-                    broadCastMessage(ctx.messageAsClass(Clip.class), ctx);
-                } catch (Exception e) {
-                    ctx.send("Invalid message body structure");
-                }
             });
 
             ws.onClose(ctx -> usersMap.remove(ctx));

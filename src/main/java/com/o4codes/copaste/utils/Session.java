@@ -4,6 +4,9 @@ import com.o4codes.copaste.models.Clip;
 import com.o4codes.copaste.models.Config;
 import com.o4codes.copaste.services.AppPreferenceService;
 import io.javalin.websocket.WsContext;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+
 import java.net.http.WebSocket;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,7 +22,6 @@ public class Session {
     public static Thread clipListenerThread;
     public static WebSocket webSocketClient;
     public static final String CONNECTION_PORT = "7235";
-    public static String ipAddress;
 
-    public static boolean isClientConnection = false;
+    public static BooleanProperty isClientConnected = new SimpleBooleanProperty(false);
 }
