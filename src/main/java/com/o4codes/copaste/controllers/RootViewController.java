@@ -9,6 +9,7 @@ import com.o4codes.copaste.utils.Session;
 import com.o4codes.copaste.views.ViewComponents;
 import com.o4codes.copaste.views.AlertComponents;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -157,22 +158,38 @@ public class RootViewController implements Initializable {
             }
 
             String ipAddress = Helper.getIPAddressFromURL(hostURL);
-
             System.out.println(ipAddress + " " + Session.CONNECTION_PORT);
-            if (NetworkUtils.isServerReachable(ipAddress, Integer.parseInt(Session.CONNECTION_PORT))) {
+            Stage loadingStage = ViewComponents.loadingSpinner(rootPane, "Connecting to server");
+            loadingStage.show();
 
-                try {
-                    new SocketClientService().startClient(hostURL, Session.CONNECTION_PORT);
-                    ClipBoardService.startClipBoardListener(); // start the clipboard listener
-                    ViewComponents.clipViewStage().show();
-                    backBtn.getScene().getWindow().hide();
-                    AlertComponents.showSuccessNotification("Connected", "Connected to server");
-                } catch (IOException e) {
-                    e.printStackTrace();
+            new Thread(() -> {
+                if (NetworkUtils.isServerReachable(ipAddress, Integer.parseInt(Session.CONNECTION_PORT))) {
+                    System.out.println("Checked conceded");
+                    Platform.runLater(() -> {
+                        try {
+                            System.out.println("Inside here");
+                            new SocketClientService().startClient(hostURL, Session.CONNECTION_PORT);
+                            ClipBoardService.startClipBoardListener(); // start the clipboard listener
+                            loadingStage.hide();
+                            ViewComponents.clipViewStage().show();
+                            backBtn.getScene().getWindow().hide();
+                            AlertComponents.showSuccessNotification("Connected", "Connected to server");
+                        }
+                        catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
+
+                } else {
+                    Platform.runLater(() ->{
+                        loadingStage.hide();
+                        AlertComponents.showErrorNotification(
+                                "Connection Error", "Server is not reachable");
+                    });
                 }
-            } else {
-                AlertComponents.showErrorNotification("Connection Error", "Server is not reachable");
-            }
+            }).start();
+
+
 
         });
 

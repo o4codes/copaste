@@ -3,6 +3,7 @@ package com.o4codes.copaste.views;
 import com.o4codes.copaste.MainApp;
 import com.o4codes.copaste.services.SocketServerService;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXProgressSpinner;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -14,6 +15,7 @@ import javafx.scene.effect.BoxBlur;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.kordamp.ikonli.javafx.FontIcon;
@@ -147,8 +149,43 @@ public class ViewComponents {
         return hBox;
     }
 
+    public static Stage loadingSpinner(Node parentWindow, String message) {
+        VBox root = new VBox();
+        root.setPadding(new Insets(20));
+        root.setSpacing(20);
+        root.setAlignment(Pos.CENTER);
+        root.getStyleClass().add("root");
+        root.setStyle(
+                """
+                -fx-background-radius: 10;
+                -fx-border-radius: 10;
+                -fx-border-color: #ccc;
+                -fx-border-width: 1;
+                """
+        );
 
+        MFXProgressSpinner progressSpinner = new MFXProgressSpinner();
+        progressSpinner.setRadius(40);
+        progressSpinner.setProgress(MFXProgressSpinner.INDETERMINATE_PROGRESS);
 
+        Label messageLabel = new Label(message);
+        messageLabel.getStyleClass().add("text_label");
+
+        root.getChildren().addAll(progressSpinner, messageLabel);
+        Stage stage = new Stage(StageStyle.TRANSPARENT);
+        Scene scene = new Scene(root);
+        scene.setFill(Color.TRANSPARENT);
+        stage.setScene(scene);
+
+        stage.setOnShown(event -> {
+            BoxBlur blur = new BoxBlur(3, 3, 3);
+            parentWindow.setEffect(blur);
+        });
+
+        stage.setOnHidden(event -> parentWindow.setEffect(null));
+
+        return stage;
+    }
 
 }
 
